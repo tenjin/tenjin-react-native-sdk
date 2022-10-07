@@ -118,6 +118,12 @@ Parameters:
 - `successCallback`: Callback
 - `errorCallback`: Callback
 
+### Append app subversion
+```javascript
+Tenjin.appendAppSubversion(subversion)
+```
+Parameters:
+- `subversion`: Number
 
 ### Send AdMob impression (ILRD)
 ```javascript
