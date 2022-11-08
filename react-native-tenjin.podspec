@@ -18,9 +18,8 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.xcconfig = { "OTHER_LINKER_FLAGS" => "-ObjC -all_load" }
-  #s.ios.vendored_frameworks = "ios/libTenjinSDKUniversal.a"
   s.static_framework = true
   s.dependency "React"
-  s.dependency "TenjinSDK", "1.12.18"
+  s.dependency "TenjinSDK", "1.12.19"
 end
 
