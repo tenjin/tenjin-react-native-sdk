@@ -1,8 +1,7 @@
 # React Native Tenjin Plugin
 
 # Summary
-
-The Tenjin iOS SDK allows users to track events and installs in their iOS apps. To learn more about Tenjin and our product offering, please visit https://www.tenjin.com.
+Tenjin's SDK allows users to track events and installs in their apps. To learn more about Tenjin and our product offering, please visit https://www.tenjin.com.
 
 ### Notes:
 
@@ -102,21 +101,6 @@ Parameters:
 - `name`: String
 - `value`: String
 
-### Get attribution info
-```javascript
-Tenjin.getAttributionInfo(
-    (success) => {
-        console.log(`Attibution info found! ${success}`);
-    },
-    () => {
-        console.error(`Attribution info failed`);
-    }
-)
-```
-Parameters:
-- `successCallback`: Callback
-- `errorCallback`: Callback
-
 ### Append app subversion
 ```javascript
 Tenjin.appendAppSubversion(subversion)
@@ -124,40 +108,24 @@ Tenjin.appendAppSubversion(subversion)
 Parameters:
 - `subversion`: Number
 
-### Send AdMob impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionAdMob(json)
-```
-Parameters:
-- `json`: JSON
+### <a id="ilrd"></a>Impression Level Ad Revenue Integration
 
-### Send AppLovin impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionAppLovin(json)
-```
-Parameters:
-- `json`: JSON
+Tenjin supports the ability to integrate with the Impression Level Ad Revenue (ILRD) feature from,
+- AppLovin
+- IronSource
+- HyperBid
+- AdMob
+- TopOn
 
-### Send HyperBid impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionHyperBid(json)
-```
-Parameters:
-- `json`: JSON
+This feature allows you to receive events which correspond to your ad revenue that is affected by each advertisement show to a user. To enable this feature, follow the below instructions.
 
-### Send IronSource impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionIronSource(json)
-```
-Parameters:
-- `json`: JSON
+:warning: **NOTE: ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.**
 
-### Send TopOn impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionTopOn(json)
-```
-Parameters:
-- `json`: JSON
+### <a id="attributionInfo"></a>Attribution Info
+
+Tenjin supports retrieving of attributes, which are required for developers to get analytics installation id (previously known as tenjin reference id). This parameter can be used when there is no advertising id.
+
+:warning: **NOTE: Attribution Info is a paid feature, so please contact your Tenjin account manager if you are interested in.**
 
 ## Support
 If you have any issues with the plugin integration or usage, please contact us to support@tenjin.com
