@@ -1,6 +1,6 @@
 // TenjinModule.java
 
-package com.reactlibrary;
+package com.tenjin;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
@@ -159,6 +159,16 @@ public class TenjinModule extends ReactContextBaseJavaModule {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @ReactMethod
+    public void setCustomerUserId(String userId) {
+        instance.setCustomerUserId(userId);
+    }
+
+    @ReactMethod
+    public void getCustomerUserId(com.facebook.react.bridge.Callback callback) {
+        callback.invoke(instance.getCustomerUserId());
     }
 
     private String[] readableToArray(ReadableArray readableArray) {
