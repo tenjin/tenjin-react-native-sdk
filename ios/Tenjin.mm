@@ -58,19 +58,33 @@ RCT_EXPORT_METHOD(appendAppSubversion:(NSNumber * _Nonnull)version)
     [TenjinSDK appendAppSubversion:version];
 }
 
+// We must name updatePostbackConversionValue differently for each different
+// signature because React Native doesn't support different arities of arguments
+// with the same name.
+//
+// See https://github.com/facebook/react-native/issues/12498
+
 RCT_EXPORT_METHOD(updatePostbackConversionValue:(NSNumber * _Nonnull)conversionValue)
 {
     [TenjinSDK updatePostbackConversionValue:[conversionValue intValue]];
 }
 
-RCT_EXPORT_METHOD(updatePostbackConversionValue:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue)
+RCT_EXPORT_METHOD(updatePostbackConversionValueWithCoarseValue:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue)
 {
-    [TenjinSDK updatePostbackConversionValue:[conversionValue intValue] coarseValue:coarseValue];
+    if (@available(iOS 16.1, *)) {
+        [TenjinSDK updatePostbackConversionValue:[conversionValue intValue] coarseValue:coarseValue];
+    } else {
+        [TenjinSDK updatePostbackConversionValue:[conversionValue intValue]];
+    }
 }
 
-RCT_EXPORT_METHOD(updatePostbackConversionValue:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue lockWindow:(BOOL)lockWindow)
+RCT_EXPORT_METHOD(updatePostbackConversionValueWithCoarseValueAndLockWindow:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue lockWindow:(BOOL)lockWindow)
 {
-    [TenjinSDK updatePostbackConversionValue:[conversionValue intValue] coarseValue:coarseValue lockWindow:lockWindow];
+    if (@available(iOS 16.1, *)) {
+        [TenjinSDK updatePostbackConversionValue:[conversionValue intValue] coarseValue:coarseValue lockWindow:lockWindow];
+    } else {
+        [TenjinSDK updatePostbackConversionValue:[conversionValue intValue]];
+    }
 }
 
 RCT_EXPORT_METHOD(getAttributionInfo:(RCTResponseSenderBlock)successCallback errorCallback: (RCTResponseSenderBlock)errorCallback)

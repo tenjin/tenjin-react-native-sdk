@@ -6,8 +6,34 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const Tenjin = NativeModules.Tenjin
-  ? NativeModules.Tenjin
+export type TenjinCoarseConversionValue = 'low' | 'medium' | 'high';
+
+const nativeTenjin = NativeModules.Tenjin;
+
+const Tenjin = nativeTenjin
+  ? {
+      ...nativeTenjin,
+      updatePostbackConversionValue: (
+        conversionValue: number,
+        coarseValue?: TenjinCoarseConversionValue,
+        lockWindow?: number
+      ) => {
+        if (lockWindow) {
+          return nativeTenjin.updatePostbackConversionValueWithCoarseValueAndLockWindow(
+            conversionValue,
+            coarseValue,
+            lockWindow
+          );
+        } else if (coarseValue) {
+          return nativeTenjin.updatePostbackConversionValueWithCoarseValue(
+            conversionValue,
+            coarseValue
+          );
+        } else {
+          return nativeTenjin.updatePostbackConversionValue(conversionValue);
+        }
+      },
+    }
   : new Proxy(
       {},
       {
