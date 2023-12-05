@@ -63,12 +63,12 @@ RCT_EXPORT_METHOD(updatePostbackConversionValue:(NSNumber * _Nonnull)conversionV
     [TenjinSDK updatePostbackConversionValue:[conversionValue intValue]];
 }
 
-RCT_EXPORT_METHOD(updatePostbackConversionValue:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue)
+RCT_EXPORT_METHOD(updatePostbackConversionValueWithCoarseValue:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue)
 {
     [TenjinSDK updatePostbackConversionValue:[conversionValue intValue] coarseValue:coarseValue];
 }
 
-RCT_EXPORT_METHOD(updatePostbackConversionValue:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue lockWindow:(BOOL)lockWindow)
+RCT_EXPORT_METHOD(updatePostbackConversionValueWithCoarseValueAndLockWindow:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue lockWindow:(BOOL)lockWindow)
 {
     [TenjinSDK updatePostbackConversionValue:[conversionValue intValue] coarseValue:coarseValue lockWindow:lockWindow];
 }
