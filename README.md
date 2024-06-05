@@ -8,15 +8,6 @@ The Tenjin React Native Plugin allows users to track events and installs in thei
 
 On iOS:
 For AppTrackingTransparency, be sure to update your project `.plist` file and add `NSUserTrackingUsageDescription` along with the text message you want to display to users. This library is only available in iOS 14.0+. For further information on this, you can check our [iOS documentation](https://github.com/tenjin/tenjin-ios-sdk#-skadnetwork-and-ios-15-advertiser-postbacks)
-  
-On Android:
-You will need to add [Google's Install Referrer Library](https://developer.android.com/google/play/installreferrer/library.html) to your gradle dependencies. If you haven’t already installed the [Google Play Services](https://developers.google.com/android/guides/setup) you also need to add it
-```gradle
-dependencies {
-  classpath("com.android.installreferrer:installreferrer:1.1.2")
-  classpath("com.google.android.gms:play-services-analytics:17.0.0")
-}
-```
 
 # Plugin Integration
 
@@ -77,6 +68,21 @@ Tenjin.optOut(parameters)
 Parameters:
 - `parameters`: Array
 
+### OptIn and OptOut using CMP
+```javascript
+Tenjin.optInOutUsingCMP()
+```
+
+### Opt out of Google DMA parameters
+```javascript
+Tenjin.optOutGoogleDMA()
+```
+
+### Opt in of Google DMA parameters
+```javascript
+Tenjin.optInGoogleDMA()
+```
+
 ### Register transaction
 ```javascript
 transaction(productName, currencyCode, quantity, unitPrice)
@@ -136,6 +142,13 @@ Tenjin.getCustomerUserId()
 ```
 Returns: callback -> `string`
 
+### Get Analytics Installation ID
+
+```javascript
+Tenjin.getAnalyticsInstallationId()
+```
+Returns: callback -> `string`
+
 ### Send AdMob impression (ILRD)
 ```javascript
 Tenjin.eventAdImpressionAdMob(json)
@@ -170,6 +183,21 @@ Tenjin.eventAdImpressionTopOn(json)
 ```
 Parameters:
 - `json`: JSON
+
+### Send TradPlus impression (ILRD)
+```javascript
+Tenjin.eventAdImpressionTradPlus(json)
+```
+Parameters:
+- `json`: JSON
+
+### Send Google DMA Parameters
+```javascript
+Tenjin.setGoogleDMAParametersWithAdPersonalization(adPersonalization, adUserData)
+```
+Parameters:
+- `adPersonalization`: Boolean
+- `adUserData`: Boolean
 
 ## Support
 If you have any issues with the plugin integration or usage, please contact us to support@tenjin.com

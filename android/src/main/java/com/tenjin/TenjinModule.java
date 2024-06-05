@@ -86,6 +86,21 @@ public class TenjinModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void optInOutUsingCMP() {
+        instance.optInOutUsingCMP();
+    }
+
+    @ReactMethod
+    public void optOutGoogleDMA() {
+        instance.optOutGoogleDMA();
+    }
+
+    @ReactMethod
+    public void optInGoogleDMA() {
+        instance.optInGoogleDMA();
+    }
+
+    @ReactMethod
     public void transaction(String productName, String currencyCode, Double quantity, Double unitPrice) {
         instance.transaction(productName, currencyCode, Integer.valueOf(quantity.intValue()), unitPrice);
     }
@@ -162,6 +177,15 @@ public class TenjinModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void eventAdImpressionTradPlus(ReadableMap json) {
+        try {
+            instance.eventAdImpressionTradPlus(convertMapToJson(json));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @ReactMethod
     public void setCustomerUserId(String userId) {
         instance.setCustomerUserId(userId);
     }
@@ -169,6 +193,16 @@ public class TenjinModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void getCustomerUserId(com.facebook.react.bridge.Callback callback) {
         callback.invoke(instance.getCustomerUserId());
+    }
+
+    @ReactMethod
+    public void getAnalyticsInstallationId(com.facebook.react.bridge.Callback callback) {
+        callback.invoke(instance.getAnalyticsInstallationId());
+    }
+
+    @ReactMethod
+    public void setGoogleDMAParameters(Boolean adPersonalization, Boolean adUserData) {
+        instance.setGoogleDMAParameters(adPersonalization, adUserData);
     }
 
     private String[] readableToArray(ReadableArray readableArray) {

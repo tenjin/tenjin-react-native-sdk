@@ -34,6 +34,21 @@ RCT_EXPORT_METHOD(optOutParams:(NSArray * _Nonnull)params)
     [TenjinSDK optOutParams:params];
 }
 
+RCT_EXPORT_METHOD(optInOutUsingCMP)
+{
+    [TenjinSDK optInOutUsingCMP];
+}
+
+RCT_EXPORT_METHOD(optOutGoogleDMA)
+{
+    [TenjinSDK optOutGoogleDMA];
+}
+
+RCT_EXPORT_METHOD(optInGoogleDMA)
+{
+    [TenjinSDK optInGoogleDMA];
+}
+
 RCT_EXPORT_METHOD(transaction:(NSString * _Nonnull)productName
                   currencyCode:(NSString * _Nonnull)currencyCode
                   quantity:(NSInteger)quantity
@@ -154,6 +169,20 @@ RCT_EXPORT_METHOD(eventAdImpressionTopOn:(NSDictionary * _Nonnull)json)
     }
 }
 
+RCT_EXPORT_METHOD(eventAdImpressionTradPlus:(NSDictionary * _Nonnull)json)
+{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json
+                                                       options:0
+                                                         error:&error];
+    if (! jsonData) {
+        NSLog(@"Tenjin - Impression parsing error: %@", error);
+    } else {
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [TenjinSDK tradPlusImpressionFromJSON:jsonString];
+    }
+}
+
 RCT_EXPORT_METHOD(setCustomerUserId:(NSString * _Nonnull)userId)
 {
     [TenjinSDK setCustomerUserId:userId];
@@ -162,6 +191,16 @@ RCT_EXPORT_METHOD(setCustomerUserId:(NSString * _Nonnull)userId)
 RCT_EXPORT_METHOD(getCustomerUserId:(RCTResponseSenderBlock)callback)
 {
     callback(@[[TenjinSDK getCustomerUserId]]);
+}
+
+RCT_EXPORT_METHOD(getAnalyticsInstallationId:(RCTResponseSenderBlock)callback)
+{
+    callback(@[[TenjinSDK getAnalyticsInstallationId]]);
+}
+
+RCT_EXPORT_METHOD(setGoogleDMAParameters:(BOOL)adPersonalization adUserData:(BOOL)adUserData)
+{
+    [[TenjinSDK sharedInstance] setGoogleDMAParametersWithAdPersonalization:adPersonalization adUserData:adUserData];
 }
 
 @end
