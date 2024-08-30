@@ -58,6 +58,17 @@ RCT_EXPORT_METHOD(transaction:(NSString * _Nonnull)productName
     [TenjinSDK transactionWithProductName: productName andCurrencyCode: currencyCode andQuantity:quantity andUnitPrice: price];
 }
 
+RCT_EXPORT_METHOD(transactionWithReceipt:(NSString * _Nonnull)productName
+                  currencyCode:(NSString * _Nonnull)currencyCode
+                  quantity:(NSInteger)quantity
+                  unitPrice:(double)unitPrice
+                  transaction:(NSString * _Nonnull)transaction
+                  data:(NSString * _Nonnull)data)
+{
+    NSDecimalNumber *price = [[NSDecimalNumber alloc] initWithDouble:unitPrice];
+    [TenjinSDK transactionWithProductName: productName andCurrencyCode: currencyCode andQuantity:quantity andUnitPrice: price andTransactionId: transaction andBase64Receipt: data];
+}
+
 RCT_EXPORT_METHOD(eventWithName:(NSString * _Nonnull)name)
 {
     [TenjinSDK sendEventWithName:name];

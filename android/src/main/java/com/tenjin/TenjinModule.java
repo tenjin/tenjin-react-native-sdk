@@ -106,6 +106,11 @@ public class TenjinModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void transactionWithReceipt(String productName, String currencyCode, Double quantity, Double unitPrice, String transaction, String data) {
+        instance.transaction(productName, currencyCode, Integer.valueOf(quantity.intValue()), unitPrice, transaction, data);
+    }
+
+    @ReactMethod
     public void eventWithName(String name) {
         instance.eventWithName(name);
     }
