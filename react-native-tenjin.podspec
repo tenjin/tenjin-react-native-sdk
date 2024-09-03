@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm}"
 
   s.dependency "React-Core"
-  s.dependency "TenjinSDK", "1.14.3"
+  s.dependency "TenjinSDK", "1.14.4"
 
 
   # Don't install the dependencies when we run `pod install` in the old architecture.
