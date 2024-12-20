@@ -1,0 +1,51 @@
+{
+    "modules": [
+      {
+        "name": "Tenjin",
+        "type": "NativeModule",
+        "jsModuleName": "NativeTenjinSpec",
+        "methods": [
+          { "name": "initialize", "type": "sync", "params": [{ "name": "apiKey", "type": "string" }] },
+          { "name": "connect", "type": "sync" },
+          { "name": "optIn", "type": "sync" },
+          { "name": "optOut", "type": "sync" },
+          { "name": "optInParams", "type": "sync", "params": [{ "name": "params", "type": "array", "itemType": "string" }] },
+          { "name": "optOutParams", "type": "sync", "params": [{ "name": "params", "type": "array", "itemType": "string" }] },
+          { "name": "transaction", "type": "sync", "params": [
+            { "name": "productName", "type": "string" },
+            { "name": "currencyCode", "type": "string" },
+            { "name": "quantity", "type": "int" },
+            { "name": "unitPrice", "type": "double" }
+          ] },
+          { "name": "transactionWithReceipt", "type": "sync", "params": [
+            { "name": "productName", "type": "string" },
+            { "name": "currencyCode", "type": "string" },
+            { "name": "quantity", "type": "int" },
+            { "name": "unitPrice", "type": "double" },
+            { "name": "transaction", "type": "string" },
+            { "name": "data", "type": "string" }
+          ] },
+          { "name": "eventWithName", "type": "sync", "params": [{ "name": "name", "type": "string" }] },
+          { "name": "eventWithNameAndValue", "type": "sync", "params": [
+            { "name": "name", "type": "string" },
+            { "name": "value", "type": "string" }
+          ] },
+          { "name": "appendAppSubversion", "type": "sync", "params": [{ "name": "version", "type": "int" }] },
+          { "name": "updatePostbackConversionValue", "type": "sync", "params": [{ "name": "conversionValue", "type": "int" }] },
+          { "name": "updatePostbackConversionValueWithCoarseValue", "type": "sync", "params": [
+            { "name": "conversionValue", "type": "int" },
+            { "name": "coarseValue", "type": "string" }
+          ] },
+          { "name": "updatePostbackConversionValueWithCoarseValueAndLockWindow", "type": "sync", "params": [
+            { "name": "conversionValue", "type": "int" },
+            { "name": "coarseValue", "type": "string" },
+            { "name": "lockWindow", "type": "bool" }
+          ] },
+          { "name": "setCustomerUserId", "type": "sync", "params": [{ "name": "userId", "type": "string" }] },
+          { "name": "getCustomerUserId", "type": "async", "params": [], "returnType": { "type": "string" } },
+          { "name": "getAnalyticsInstallationId", "type": "async", "params": [], "returnType": { "type": "string" } }
+        ]
+      }
+    ]
+  }
+  
