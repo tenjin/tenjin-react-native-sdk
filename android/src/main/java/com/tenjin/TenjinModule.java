@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TenjinModule extends ReactContextBaseJavaModule {
 
@@ -127,13 +128,18 @@ public class TenjinModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void getAttributionInfo(com.facebook.react.bridge.Callback successCallback, com.facebook.react.bridge.Callback errorCallback) {
-       instance.getAttributionInfo(data -> {
-           try {
-               successCallback.invoke(convertJsonToMap(new JSONObject(data)));
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
-       });
+        final AtomicBoolean callbackInvoked = new AtomicBoolean(false);
+        instance.getAttributionInfo(data -> {
+            if (!callbackInvoked.getAndSet(true)) {
+                try {
+                    successCallback.invoke(convertJsonToMap(new JSONObject(data)));
+                } catch (JSONException e) {
+                    if (!callbackInvoked.getAndSet(true)) {
+                        errorCallback.invoke("JSON Parsing Error: " + e.getMessage());
+                    }
+                }
+            }
+        });
     }
 
     @ReactMethod
@@ -208,6 +214,21 @@ public class TenjinModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void setGoogleDMAParameters(Boolean adPersonalization, Boolean adUserData) {
         instance.setGoogleDMAParameters(adPersonalization, adUserData);
+    }
+
+    @ReactMethod
+    public void updatePostbackConversionValue(int conversionValue) {
+        // Not applicable for Android
+    }
+
+    @ReactMethod
+    public void updatePostbackConversionValueWithCoarseValue(int conversionValue, String coarseValue) {
+        // Not applicable for Android
+    }
+
+    @ReactMethod
+    public void updatePostbackConversionValueWithCoarseValueAndLockWindow(int conversionValue, String coarseValue, boolean lockWindow) {
+        // Not applicable for Android
     }
 
     private String[] readableToArray(ReadableArray readableArray) {
