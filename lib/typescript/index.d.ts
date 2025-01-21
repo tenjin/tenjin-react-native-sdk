@@ -1,3 +1,3 @@
-declare const Tenjin: any;
-export default Tenjin;
+declare const _default: {};
+export default _default;
 //# sourceMappingURL=index.d.ts.map
