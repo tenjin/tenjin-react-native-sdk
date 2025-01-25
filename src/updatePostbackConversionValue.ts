@@ -1,6 +1,11 @@
 import { NativeModules } from 'react-native';
 
-const nativeTenjin = NativeModules.Tenjin;
+// @ts-expect-error
+const isTurboModuleEnabled = global.__turboModuleProxy != null;
+
+const nativeTenjin = isTurboModuleEnabled
+  ? require('./NativeTenjin').default
+  : NativeModules.Tenjin;
 
 export type TenjinCoarseConversionValue = 'low' | 'medium' | 'high';
 
