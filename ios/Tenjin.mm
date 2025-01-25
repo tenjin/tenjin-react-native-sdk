@@ -1,8 +1,12 @@
 #import "Tenjin.h"
 #import "TenjinSDK.h"
+#ifdef RCT_NEW_ARCH_ENABLED
+#import "RNTenjinSpec.h"
+#endif
 
 @implementation Tenjin
-RCT_EXPORT_MODULE()
+
+RCT_EXPORT_MODULE(Tenjin)
 
 RCT_EXPORT_METHOD(initialize:(NSString * _Nonnull)apiKey)
 {
@@ -51,22 +55,32 @@ RCT_EXPORT_METHOD(optInGoogleDMA)
 
 RCT_EXPORT_METHOD(transaction:(NSString * _Nonnull)productName
                   currencyCode:(NSString * _Nonnull)currencyCode
-                  quantity:(NSInteger)quantity
+                  quantity:(double)quantity
                   unitPrice:(double)unitPrice)
 {
     NSDecimalNumber *price = [[NSDecimalNumber alloc] initWithDouble:unitPrice];
-    [TenjinSDK transactionWithProductName: productName andCurrencyCode: currencyCode andQuantity:quantity andUnitPrice: price];
+    NSInteger quantityNumber = quantity;
+    [TenjinSDK transactionWithProductName:productName
+                         andCurrencyCode:currencyCode
+                             andQuantity:quantityNumber
+                             andUnitPrice:price];
 }
 
 RCT_EXPORT_METHOD(transactionWithReceipt:(NSString * _Nonnull)productName
                   currencyCode:(NSString * _Nonnull)currencyCode
-                  quantity:(NSInteger)quantity
+                  quantity:(double)quantity
                   unitPrice:(double)unitPrice
                   transaction:(NSString * _Nonnull)transaction
                   data:(NSString * _Nonnull)data)
 {
     NSDecimalNumber *price = [[NSDecimalNumber alloc] initWithDouble:unitPrice];
-    [TenjinSDK transactionWithProductName: productName andCurrencyCode: currencyCode andQuantity:quantity andUnitPrice: price andTransactionId: transaction andBase64Receipt: data];
+    NSInteger quantityNumber = quantity;
+    [TenjinSDK transactionWithProductName:productName
+                         andCurrencyCode:currencyCode
+                              andQuantity:quantityNumber
+                             andUnitPrice:price
+                         andTransactionId:transaction
+                         andBase64Receipt:data];
 }
 
 RCT_EXPORT_METHOD(eventWithName:(NSString * _Nonnull)name)
@@ -79,33 +93,43 @@ RCT_EXPORT_METHOD(eventWithNameAndValue:(NSString * _Nonnull)name value:(NSStrin
     [TenjinSDK sendEventWithName:name andEventValue:value];
 }
 
-RCT_EXPORT_METHOD(appendAppSubversion:(NSNumber * _Nonnull)version)
+RCT_EXPORT_METHOD(appendAppSubversion:(double)version)
 {
-    [TenjinSDK appendAppSubversion:version];
+    [TenjinSDK appendAppSubversion:[[NSNumber alloc] initWithDouble:version]];
 }
 
-RCT_EXPORT_METHOD(updatePostbackConversionValue:(NSNumber * _Nonnull)conversionValue)
+RCT_EXPORT_METHOD(updatePostbackConversionValue:(double)conversionValue)
 {
-    [TenjinSDK updatePostbackConversionValue:[conversionValue intValue]];
+    [TenjinSDK updatePostbackConversionValue:(int)conversionValue];
 }
 
-RCT_EXPORT_METHOD(updatePostbackConversionValueWithCoarseValue:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue)
+RCT_EXPORT_METHOD(updatePostbackConversionValueWithCoarseValue:(double)conversionValue
+                  coarseValue:(NSString * _Nonnull)coarseValue)
 {
-    [TenjinSDK updatePostbackConversionValue:[conversionValue intValue] coarseValue:coarseValue];
+    [TenjinSDK updatePostbackConversionValue:(int)conversionValue coarseValue:coarseValue];
 }
 
-RCT_EXPORT_METHOD(updatePostbackConversionValueWithCoarseValueAndLockWindow:(NSNumber * _Nonnull)conversionValue coarseValue:(NSString * _Nonnull)coarseValue lockWindow:(BOOL)lockWindow)
+RCT_EXPORT_METHOD(updatePostbackConversionValueWithCoarseValueAndLockWindow:(double)conversionValue
+                  coarseValue:(NSString * _Nonnull)coarseValue
+                  lockWindow:(BOOL)lockWindow)
 {
-    [TenjinSDK updatePostbackConversionValue:[conversionValue intValue] coarseValue:coarseValue lockWindow:lockWindow];
+    [TenjinSDK updatePostbackConversionValue:(int)conversionValue
+                                coarseValue:coarseValue
+                                 lockWindow:lockWindow];
 }
 
-RCT_EXPORT_METHOD(getAttributionInfo:(RCTResponseSenderBlock)successCallback errorCallback: (RCTResponseSenderBlock)errorCallback)
+RCT_EXPORT_METHOD(getAttributionInfo:(RCTResponseSenderBlock)successCallback
+                  errorCallback:(RCTResponseSenderBlock)errorCallback)
 {
     [[TenjinSDK sharedInstance] getAttributionInfo:^(NSDictionary *attributionInfo, NSError *error) {
-        if(attributionInfo) {
+        if (error) {
+            errorCallback(@[error.localizedDescription ?: @"Unknown error"]);
+            return;
+        }
+        if (attributionInfo) {
             successCallback(@[attributionInfo]);
         } else {
-            errorCallback(nil);
+            errorCallback(@[@"No attribution info available"]);
         }
     }];
 }
@@ -113,12 +137,8 @@ RCT_EXPORT_METHOD(getAttributionInfo:(RCTResponseSenderBlock)successCallback err
 RCT_EXPORT_METHOD(eventAdImpressionAdMob:(NSDictionary * _Nonnull)json)
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json
-                                                       options:0
-                                                         error:&error];
-    if (! jsonData) {
-        NSLog(@"Tenjin - Impression parsing error: %@", error);
-    } else {
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:0 error:&error];
+    if (jsonData) {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         [TenjinSDK adMobImpressionFromJSON:jsonString];
     }
@@ -127,12 +147,8 @@ RCT_EXPORT_METHOD(eventAdImpressionAdMob:(NSDictionary * _Nonnull)json)
 RCT_EXPORT_METHOD(eventAdImpressionAppLovin:(NSDictionary * _Nonnull)json)
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json
-                                                       options:0
-                                                         error:&error];
-    if (! jsonData) {
-        NSLog(@"Tenjin - Impression parsing error: %@", error);
-    } else {
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:0 error:&error];
+    if (jsonData) {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         [TenjinSDK appLovinImpressionFromJSON:jsonString];
     }
@@ -141,12 +157,8 @@ RCT_EXPORT_METHOD(eventAdImpressionAppLovin:(NSDictionary * _Nonnull)json)
 RCT_EXPORT_METHOD(eventAdImpressionHyperBid:(NSDictionary * _Nonnull)json)
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json
-                                                       options:0
-                                                         error:&error];
-    if (! jsonData) {
-        NSLog(@"Tenjin - Impression parsing error: %@", error);
-    } else {
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:0 error:&error];
+    if (jsonData) {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         [TenjinSDK hyperBidImpressionFromJSON:jsonString];
     }
@@ -155,12 +167,8 @@ RCT_EXPORT_METHOD(eventAdImpressionHyperBid:(NSDictionary * _Nonnull)json)
 RCT_EXPORT_METHOD(eventAdImpressionIronSource:(NSDictionary * _Nonnull)json)
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json
-                                                       options:0
-                                                         error:&error];
-    if (! jsonData) {
-        NSLog(@"Tenjin - Impression parsing error: %@", error);
-    } else {
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:0 error:&error];
+    if (jsonData) {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         [TenjinSDK ironSourceImpressionFromJSON:jsonString];
     }
@@ -169,12 +177,8 @@ RCT_EXPORT_METHOD(eventAdImpressionIronSource:(NSDictionary * _Nonnull)json)
 RCT_EXPORT_METHOD(eventAdImpressionTopOn:(NSDictionary * _Nonnull)json)
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json
-                                                       options:0
-                                                         error:&error];
-    if (! jsonData) {
-        NSLog(@"Tenjin - Impression parsing error: %@", error);
-    } else {
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:0 error:&error];
+    if (jsonData) {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         [TenjinSDK topOnImpressionFromJSON:jsonString];
     }
@@ -183,12 +187,8 @@ RCT_EXPORT_METHOD(eventAdImpressionTopOn:(NSDictionary * _Nonnull)json)
 RCT_EXPORT_METHOD(eventAdImpressionTradPlus:(NSDictionary * _Nonnull)json)
 {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json
-                                                       options:0
-                                                         error:&error];
-    if (! jsonData) {
-        NSLog(@"Tenjin - Impression parsing error: %@", error);
-    } else {
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:0 error:&error];
+    if (jsonData) {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         [TenjinSDK tradPlusImpressionFromJSON:jsonString];
     }
@@ -211,7 +211,22 @@ RCT_EXPORT_METHOD(getAnalyticsInstallationId:(RCTResponseSenderBlock)callback)
 
 RCT_EXPORT_METHOD(setGoogleDMAParameters:(BOOL)adPersonalization adUserData:(BOOL)adUserData)
 {
-    [[TenjinSDK sharedInstance] setGoogleDMAParametersWithAdPersonalization:adPersonalization adUserData:adUserData];
+    [[TenjinSDK sharedInstance] setGoogleDMAParametersWithAdPersonalization:adPersonalization
+                                                                 adUserData:adUserData];
 }
+
+RCT_EXPORT_METHOD(setAppStore:(NSString *)type)
+{
+  // Nothing to implement
+}
+
+
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+(const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeTenjinSpecJSI>(params);
+}
+#endif
 
 @end

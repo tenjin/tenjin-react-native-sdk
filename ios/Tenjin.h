@@ -2,7 +2,7 @@
 #ifdef RCT_NEW_ARCH_ENABLED
 #import "RNTenjinSpec.h"
 
-@interface Tenjin : NSObject <NativeTenjinSpec>
+@interface Tenjin : NativeTenjinSpecBase <NativeTenjinSpec>
 #else
 #import <React/RCTBridgeModule.h>
 

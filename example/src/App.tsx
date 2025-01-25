@@ -1,8 +1,11 @@
-import * as React from 'react';
 import { StyleSheet, View, Button } from 'react-native';
 import Tenjin from 'react-native-tenjin';
+import { NativeModules } from 'react-native';
+
+console.log('[Tenjin]: NativeModules.Tenjin:', NativeModules.Tenjin);
 
 export default function App() {
+  console.log(Tenjin);
 
   return (
     <View style={styles.container}>
