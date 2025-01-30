@@ -35,18 +35,4 @@ function makeTenjin() {
   }
 }
 
-// const Tenjin = TenjinModule
-//   ? {
-//       ...TenjinModule,
-//       updatePostbackConversionValue,
-//     }
-//   : new Proxy(
-//       {},
-//       {
-//         get() {
-//           throw new Error(LINKING_ERROR);
-//         },
-//       }
-//     );
-
 export default makeTenjin();
