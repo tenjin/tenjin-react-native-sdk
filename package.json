@@ -1,7 +1,7 @@
 {
   "name": "react-native-tenjin",
   "title": "React Native Tenjin",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Tenjin is a unique growth infrastructure platform that helps you streamline your mobile marketing.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -25,9 +25,8 @@
     "ios",
     "cpp",
     "*.podspec",
-    "react-native.config.json",
+    "react-native.config.js",
     "!ios/build",
-    "!android/build",
     "!android/gradle",
     "!android/gradlew",
     "!android/gradlew.bat",
@@ -194,7 +193,7 @@
     "jsSrcsDir": "src",
     "outputDir": {
       "ios": "ios/generated",
-      "android": "android/generated"
+      "android": "android/build/generated/source/codegen"
     },
     "android": {
       "javaPackageName": "com.tenjin"

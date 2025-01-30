@@ -7,7 +7,7 @@ module.exports = {
       android: {
         packageName: 'com.tenjin',
         sourceDir: './android',
-        cmakeListsPath: 'generated/jni/CMakeLists.txt',
+        cmakeListsPath: 'build/generated/source/codegen/jni/CMakeLists.txt',
       },
       ios: {},
     },
