@@ -1242,7 +1242,7 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
-  - react-native-tenjin (1.2.0):
+  - react-native-tenjin (1.2.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1262,7 +1262,7 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - TenjinSDK (= 1.14.6)
+    - TenjinSDK (= 1.14.7)
     - Yoga
   - React-nativeconfig (0.76.6)
   - React-NativeModulesApple (0.76.6):
@@ -1532,7 +1532,7 @@ PODS:
     - React-perflogger (= 0.76.6)
     - React-utils (= 0.76.6)
   - SocketRocket (0.7.1)
-  - TenjinSDK (1.14.6)
+  - TenjinSDK (1.14.7)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
