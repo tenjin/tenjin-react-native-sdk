@@ -8,7 +8,7 @@ module.exports = {
     },
     android: {
       packageName: 'tenjin.example',
-      sourceDir: '../android',
+      sourceDir: './android',
     },
   },
   dependencies: {
