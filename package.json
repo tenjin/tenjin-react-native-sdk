@@ -1,7 +1,7 @@
 {
   "name": "react-native-tenjin",
   "title": "React Native Tenjin",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Tenjin is a unique growth infrastructure platform that helps you streamline your mobile marketing.",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
@@ -198,7 +198,7 @@
     "android": {
       "javaPackageName": "com.tenjin"
     },
-    "includesGeneratedCode": true
+    "includesGeneratedCode": false
   },
   "create-react-native-library": {
     "type": "module-mixed",
