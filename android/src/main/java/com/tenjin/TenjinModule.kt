@@ -192,6 +192,16 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   }
 
   @ReactMethod
+  override fun setCacheEventSetting(setting: Boolean) {
+    instance?.setCacheEventSetting(setting)
+  }
+
+  @ReactMethod
+  override fun setEncryptRequestsSetting(setting: Boolean) {
+    instance?.setEncryptRequestsSetting(setting)
+  }
+
+  @ReactMethod
   override fun updatePostbackConversionValue(conversionValue: Double) {
     // Nothing to implement
   }

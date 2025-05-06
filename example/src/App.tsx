@@ -11,7 +11,11 @@ export default function App() {
     <View style={styles.container}>
       <Button
     title="Initialize"
-    onPress={() => Tenjin.initialize("YOUR_SDK_KEY")}
+    onPress={() => {
+      Tenjin.initialize("YOUR_SDK_KEY")
+      Tenjin.setCacheEventSetting(true)
+      Tenjin.setEncryptRequestsSetting(true)
+    }}
   />
   <Button
     title="Connect"

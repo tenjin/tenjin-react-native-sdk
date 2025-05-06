@@ -212,6 +212,16 @@ RCT_EXPORT_METHOD(setGoogleDMAParameters:(BOOL)adPersonalization adUserData:(BOO
                                                                  adUserData:adUserData];
 }
 
+RCT_EXPORT_METHOD(setCacheEventSetting:(BOOL)setting)
+{
+    [TenjinSDK setCacheEventSetting:setting];
+}
+
+RCT_EXPORT_METHOD(setEncryptRequestsSetting:(BOOL)setting)
+{
+    [TenjinSDK setEncryptRequestsSetting:setting];
+}
+
 RCT_EXPORT_METHOD(setAppStore:(NSString *)type)
 {
   // Nothing to implement

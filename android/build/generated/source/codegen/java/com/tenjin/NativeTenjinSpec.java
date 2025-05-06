@@ -149,4 +149,12 @@ public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implem
   @ReactMethod
   @DoNotStrip
   public abstract void setGoogleDMAParameters(boolean adPersonalization, boolean adUserData);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void setCacheEventSetting(boolean setting);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void setEncryptRequestsSetting(boolean setting);
 }
