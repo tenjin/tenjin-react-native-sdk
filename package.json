@@ -1,12 +1,17 @@
 {
   "name": "react-native-tenjin",
-  "title": "React Native Tenjin",
   "version": "1.2.3",
   "description": "Tenjin is a unique growth infrastructure platform that helps you streamline your mobile marketing.",
-  "source": "./src/index.tsx",
-  "main": "./lib/commonjs/index.js",
-  "module": "./lib/module/index.js",
+  "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.tsx",
+      "types": "./lib/typescript/src/index.d.ts",
+      "default": "./lib/module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "src",
     "lib",
@@ -16,6 +21,7 @@
     "*.podspec",
     "react-native.config.js",
     "!ios/build",
+    "!android/build",
     "!android/gradle",
     "!android/gradlew",
     "!android/gradlew.bat",
@@ -31,7 +37,8 @@
     "typecheck": "tsc",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
-    "prepare": "bob build"
+    "prepare": "bob build",
+    "release": "release-it"
   },
   "keywords": [
     "react-native",
@@ -40,13 +47,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tenjin/tenjin-react-native-sdk.git",
-    "baseUrl": "https://github.com/tenjin/tenjin-react-native-sdk"
+    "url": "git+https://github.com/tenjin/tenjin-react-native-sdk.git"
   },
-  "author": {
-    "name": "Tenjin",
-    "email": "engineering@tenjin.com"
-  },
+  "author": "Tenjin <engineering@tenjin.com> (https://tenjin.com)",
   "license": "MIT",
   "homepage": "https://tenjin.com",
   "readmeFilename": "README.md",
@@ -57,25 +60,30 @@
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
-    "@react-native-community/cli": "15.0.1",
-    "@react-native/eslint-config": "^0.73.1",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/compat": "^1.2.7",
+    "@eslint/eslintrc": "^3.3.0",
+    "@eslint/js": "^9.22.0",
+    "@evilmartians/lefthook": "^1.5.0",
+    "@react-native-community/cli": "15.0.0-alpha.2",
+    "@react-native/babel-preset": "0.79.2",
+    "@react-native/eslint-config": "^0.78.0",
+    "@release-it/conventional-changelog": "^9.0.2",
     "@types/jest": "^29.5.5",
-    "@types/react": "^19.1.0",
-    "commitlint": "^17.0.2",
+    "@types/react": "^19.0.0",
+    "commitlint": "^19.6.1",
     "del-cli": "^5.1.0",
-    "eslint": "^8.51.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.1",
+    "eslint": "^9.22.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.3",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
-    "react": "19.1.0",
-    "react-native": "0.79.1",
-    "react-native-builder-bob": "^0.40.6",
+    "react": "19.0.0",
+    "react-native": "0.79.2",
+    "react-native-builder-bob": "^0.40.10",
+    "release-it": "^17.10.0",
     "turbo": "^1.10.7",
     "typescript": "^5.2.2"
-  },
-  "resolutions": {
-    "@types/react": "^19.1.0"
   },
   "peerDependencies": {
     "react": "*",
@@ -92,30 +100,30 @@
       "<rootDir>/lib/"
     ]
   },
-  "eslintConfig": {
-    "root": true,
+  "commitlint": {
     "extends": [
-      "@react-native",
-      "prettier"
-    ],
-    "rules": {
-      "react/react-in-jsx-scope": "off",
-      "prettier/prettier": [
-        "error",
-        {
-          "quoteProps": "consistent",
-          "singleQuote": true,
-          "tabWidth": 2,
-          "trailingComma": "es5",
-          "useTabs": false
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": {
+          "name": "angular"
         }
-      ]
+      }
     }
   },
-  "eslintIgnore": [
-    "node_modules/",
-    "lib/"
-  ],
   "prettier": {
     "quoteProps": "consistent",
     "singleQuote": true,
@@ -127,8 +135,12 @@
     "source": "src",
     "output": "lib",
     "targets": [
-      "commonjs",
-      "module",
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
       [
         "typescript",
         {
@@ -138,21 +150,16 @@
     ]
   },
   "codegenConfig": {
-    "name": "RNTenjinSpec",
+    "name": "TenjinSpec",
     "type": "modules",
     "jsSrcsDir": "src",
-    "outputDir": {
-      "ios": "ios/generated",
-      "android": "android/generated"
-    },
     "android": {
       "javaPackageName": "com.tenjin"
-    },
-    "includesGeneratedCode": true
+    }
   },
   "create-react-native-library": {
-    "type": "module-mixed",
     "languages": "kotlin-objc",
-    "version": "0.42.3"
+    "type": "turbo-module",
+    "version": "0.50.2"
   }
 }

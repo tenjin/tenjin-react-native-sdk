@@ -1,8 +1,5 @@
 #import "Tenjin.h"
 #import "TenjinSDK.h"
-#ifdef RCT_NEW_ARCH_ENABLED
-#import "RNTenjinSpec.h"
-#endif
 
 @implementation Tenjin
 
