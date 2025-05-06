@@ -7,7 +7,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import java.util.concurrent.atomic.AtomicBoolean
 
-class TenjinModule internal constructor(private val reactContext: ReactApplicationContext): TenjinSpec(reactContext)  {
+class TenjinModule internal constructor(private val reactContext: ReactApplicationContext): NativeTenjinSpec(reactContext)  {
   companion object {
     const val NAME = "Tenjin"
   }
@@ -191,23 +191,29 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
     instance?.setGoogleDMAParameters(adPersonalization, adUserData)
   }
 
+  @ReactMethod
+  override fun setCacheEventSetting(setting: Boolean) {
+    instance?.setCacheEventSetting(setting)
+  }
+
+  @ReactMethod
+  override fun setEncryptRequestsSetting(setting: Boolean) {
+    instance?.setEncryptRequestsSetting(setting)
+  }
+
+  @ReactMethod
   override fun updatePostbackConversionValue(conversionValue: Double) {
-    TODO("Not yet implemented")
+    // Nothing to implement
   }
 
-  override fun updatePostbackConversionValueWithCoarseValue(
-    conversionValue: Double,
-    coarseValue: String?
-  ) {
-    TODO("Not yet implemented")
+  @ReactMethod
+  override fun updatePostbackConversionValueWithCoarseValue(conversionValue: Double, coarseValue: String) {
+    // Nothing to implement
   }
 
-  override fun updatePostbackConversionValueWithCoarseValueAndLockWindow(
-    conversionValue: Double,
-    coarseValue: String?,
-    lockWindow: Boolean
-  ) {
-    TODO("Not yet implemented")
+  @ReactMethod
+  override fun updatePostbackConversionValueWithCoarseValueAndLockWindow(conversionValue: Double, coarseValue: String, lockWindow: Boolean) {
+    // Nothing to implement
   }
 
   private fun readableToArray(readableArray: ReadableArray): Array<String> {
@@ -239,8 +245,16 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
         ReadableType.Boolean -> jsonArray.put(readableArray.getBoolean(i))
         ReadableType.Number -> jsonArray.put(readableArray.getDouble(i))
         ReadableType.String -> jsonArray.put(readableArray.getString(i))
-        ReadableType.Map -> jsonArray.put(convertMapToJson(readableArray.getMap(i)))
-        ReadableType.Array -> jsonArray.put(convertArrayToJson(readableArray.getArray(i)))
+        ReadableType.Map -> {
+          readableArray.getMap(i)?.let { map ->
+            jsonArray.put(convertMapToJson(map))
+          } ?: jsonArray.put(JSONObject.NULL)
+        }
+        ReadableType.Array -> {
+          readableArray.getArray(i)?.let { array ->
+            jsonArray.put(convertArrayToJson(array))
+          } ?: jsonArray.put(JSONObject.NULL)
+        }
       }
     }
     return jsonArray
@@ -281,3 +295,4 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
     return array
   }
 }
+

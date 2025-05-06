@@ -60,6 +60,7 @@ export interface Spec extends TurboModule {
     adPersonalization: boolean,
     adUserData: boolean
   ): void;
+  setEncryptRequestsSetting(setting: boolean): void;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Tenjin');

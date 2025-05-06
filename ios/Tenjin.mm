@@ -1,8 +1,5 @@
 #import "Tenjin.h"
 #import "TenjinSDK.h"
-#ifdef RCT_NEW_ARCH_ENABLED
-#import "RNTenjinSpec.h"
-#endif
 
 @implementation Tenjin
 
@@ -213,6 +210,16 @@ RCT_EXPORT_METHOD(setGoogleDMAParameters:(BOOL)adPersonalization adUserData:(BOO
 {
     [[TenjinSDK sharedInstance] setGoogleDMAParametersWithAdPersonalization:adPersonalization
                                                                  adUserData:adUserData];
+}
+
+RCT_EXPORT_METHOD(setCacheEventSetting:(BOOL)setting)
+{
+    [TenjinSDK setCacheEventSetting:setting];
+}
+
+RCT_EXPORT_METHOD(setEncryptRequestsSetting:(BOOL)setting)
+{
+    [TenjinSDK setEncryptRequestsSetting:setting];
 }
 
 RCT_EXPORT_METHOD(setAppStore:(NSString *)type)

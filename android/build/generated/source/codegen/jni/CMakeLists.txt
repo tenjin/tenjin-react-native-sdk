@@ -6,18 +6,18 @@
 cmake_minimum_required(VERSION 3.13)
 set(CMAKE_VERBOSE_MAKEFILE on)
 
-file(GLOB react_codegen_SRCS CONFIGURE_DEPENDS *.cpp react/renderer/components/RNTenjinSpec/*.cpp)
+file(GLOB react_codegen_SRCS CONFIGURE_DEPENDS *.cpp react/renderer/components/TenjinSpec/*.cpp)
 
 add_library(
-  react_codegen_RNTenjinSpec
+  react_codegen_TenjinSpec
   OBJECT
   ${react_codegen_SRCS}
 )
 
-target_include_directories(react_codegen_RNTenjinSpec PUBLIC . react/renderer/components/RNTenjinSpec)
+target_include_directories(react_codegen_TenjinSpec PUBLIC . react/renderer/components/TenjinSpec)
 
 target_link_libraries(
-  react_codegen_RNTenjinSpec
+  react_codegen_TenjinSpec
   fbjni
   jsi
   # We need to link different libraries based on whether we are building rncore or not, that's necessary
@@ -26,7 +26,7 @@ target_link_libraries(
 )
 
 target_compile_options(
-  react_codegen_RNTenjinSpec
+  react_codegen_TenjinSpec
   PRIVATE
   -DLOG_TAG=\"ReactNative\"
   -fexceptions
