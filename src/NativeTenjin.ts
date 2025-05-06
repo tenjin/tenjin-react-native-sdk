@@ -60,6 +60,7 @@ export interface Spec extends TurboModule {
     adPersonalization: boolean,
     adUserData: boolean
   ): void;
+  setCacheEventSetting(setting: boolean): void;
   setEncryptRequestsSetting(setting: boolean): void;
 }
 
