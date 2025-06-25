@@ -151,7 +151,6 @@ Tenjin supports the ability to integrate with the Impression Level Ad Revenue (I
 - TopOn
 - Clever Ads Solutions (CAS)
 - TradPlus
-This feature allows you to receive events which correspond to your ad revenue is affected by each advertisement show to a user. To enable this feature, follow the below instructions.
 
 > [!WARNING]
 > ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.
