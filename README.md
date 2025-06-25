@@ -111,6 +111,9 @@ Parameters:
 - `value`: String
 
 ### Get attribution info
+> [!WARNING]
+> Attribution Info is a paid feature, so please contact your Tenjin account manager if you are interested in.
+
 ```javascript
 Tenjin.getAttributionInfo(
     (success) => {
@@ -151,42 +154,39 @@ Tenjin.getAnalyticsInstallationId()
 ```
 Returns: callback -> `string`
 
-### Send AdMob impression (ILRD)
+### Impression Level Revenue Data Integration (ILRD)
+> [!WARNING]
+> ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.
+
+#### Send AdMob impression (ILRD)
 ```javascript
 Tenjin.eventAdImpressionAdMob(json)
 ```
 Parameters:
 - `json`: JSON
 
-### Send AppLovin impression (ILRD)
+#### Send AppLovin impression (ILRD)
 ```javascript
 Tenjin.eventAdImpressionAppLovin(json)
 ```
 Parameters:
 - `json`: JSON
 
-### Send HyperBid impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionHyperBid(json)
-```
-Parameters:
-- `json`: JSON
-
-### Send IronSource impression (ILRD)
+#### Send IronSource impression (ILRD)
 ```javascript
 Tenjin.eventAdImpressionIronSource(json)
 ```
 Parameters:
 - `json`: JSON
 
-### Send TopOn impression (ILRD)
+#### Send TopOn impression (ILRD)
 ```javascript
 Tenjin.eventAdImpressionTopOn(json)
 ```
 Parameters:
 - `json`: JSON
 
-### Send TradPlus impression (ILRD)
+#### Send TradPlus impression (ILRD)
 ```javascript
 Tenjin.eventAdImpressionTradPlus(json)
 ```
