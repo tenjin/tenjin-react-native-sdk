@@ -110,20 +110,11 @@ Parameters:
 - `name`: String
 - `value`: String
 
-### Get attribution info
-```javascript
-Tenjin.getAttributionInfo(
-    (success) => {
-        console.log(`Attibution info found! ${success}`);
-    },
-    () => {
-        console.error(`Attribution info failed`);
-    }
-)
-```
-Parameters:
-- `successCallback`: Callback
-- `errorCallback`: Callback
+### LiveOps Campaigns
+Tenjin supports retrieving of attributes, which are required for developers to get analytics installation id (previously known as tenjin reference id). This parameter can be used when there is no advertising id.
+
+> [!WARNING]
+> Attribution Info is a paid feature, so please contact your Tenjin account manager if you are interested in.
 
 ### Append app subversion
 ```javascript
@@ -151,47 +142,18 @@ Tenjin.getAnalyticsInstallationId()
 ```
 Returns: callback -> `string`
 
-### Send AdMob impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionAdMob(json)
-```
-Parameters:
-- `json`: JSON
+### Impression Level Revenue Data Integration (ILRD)
+Tenjin supports the ability to integrate with the Impression Level Ad Revenue (ILRD) feature from,
 
-### Send AppLovin impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionAppLovin(json)
-```
-Parameters:
-- `json`: JSON
+- AppLovin
+- Unity LevelPlay
+- AdMob
+- TopOn
+- Clever Ads Solutions (CAS)
+- TradPlus
 
-### Send HyperBid impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionHyperBid(json)
-```
-Parameters:
-- `json`: JSON
-
-### Send IronSource impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionIronSource(json)
-```
-Parameters:
-- `json`: JSON
-
-### Send TopOn impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionTopOn(json)
-```
-Parameters:
-- `json`: JSON
-
-### Send TradPlus impression (ILRD)
-```javascript
-Tenjin.eventAdImpressionTradPlus(json)
-```
-Parameters:
-- `json`: JSON
+> [!WARNING]
+> ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.
 
 ### Send Google DMA Parameters
 ```javascript
