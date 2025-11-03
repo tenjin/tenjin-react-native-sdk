@@ -1,5 +1,8 @@
 import { NativeModules, Platform } from 'react-native';
-import { updatePostbackConversionValue } from './updatePostbackConversionValue';
+import {
+  updatePostbackConversionValue,
+  type TenjinCoarseConversionValue,
+} from './updatePostbackConversionValue';
 
 const LINKING_ERROR =
   `The package 'react-native-tenjin' doesn't seem to be linked. Make sure: \n\n` +
@@ -16,13 +19,75 @@ const TenjinModule = isTurboModuleEnabled
 
 console.log("TurboModule",TenjinModule);
 
-function makeTenjin() {
+export interface TenjinSDK {
+  initialize(apiKey: string): void;
+  connect(): void;
+  optIn(): void;
+  optOut(): void;
+  optInParams(params: string[]): void;
+  optOutParams(params: string[]): void;
+  optInOutUsingCMP(): void;
+  optOutGoogleDMA(): void;
+  optInGoogleDMA(): void;
+  setAppStore(type: 'googleplay' | 'amazon' | 'other'): void;
+  transaction(
+    productName: string,
+    currencyCode: string,
+    quantity: number,
+    unitPrice: number
+  ): void;
+  transactionWithReceipt(
+    productName: string,
+    currencyCode: string,
+    quantity: number,
+    unitPrice: number,
+    transactionId: string,
+    receipt: string
+  ): void;
+  transactionWithDataSignature(
+    productName: string,
+    currencyCode: string,
+    quantity: number,
+    unitPrice: number,
+    purchaseData: string,
+    dataSignature: string
+  ): void;
+  eventWithName(name: string): void;
+  eventWithNameAndValue(name: string, value: string): void;
+  appendAppSubversion(subversion: number): void;
+  updatePostbackConversionValue(
+    conversionValue: number,
+    coarseValue?: TenjinCoarseConversionValue,
+    lockWindow?: boolean
+  ): void;
+  getAttributionInfo(
+    successCallback: (info: Record<string, any>) => void,
+    errorCallback: (error: string) => void
+  ): void;
+  eventAdImpressionAdMob(json: Record<string, any>): void;
+  eventAdImpressionAppLovin(json: Record<string, any>): void;
+  eventAdImpressionHyperBid(json: Record<string, any>): void;
+  eventAdImpressionIronSource(json: Record<string, any>): void;
+  eventAdImpressionTopOn(json: Record<string, any>): void;
+  eventAdImpressionTradPlus(json: Record<string, any>): void;
+  setCustomerUserId(userId: string): void;
+  getCustomerUserId(callback: (userId: string) => void): void;
+  getAnalyticsInstallationId(callback: (id: string) => void): void;
+  setGoogleDMAParameters(
+    adPersonalization: boolean,
+    adUserData: boolean
+  ): void;
+  setCacheEventSetting(setting: boolean): void;
+  setEncryptRequestsSetting(setting: boolean): void;
+}
+
+function makeTenjin(): TenjinSDK {
   if (TenjinModule) {
     const extendedObj = {
       updatePostbackConversionValue,
     };
     Object.setPrototypeOf(extendedObj, TenjinModule);
-    return extendedObj;
+    return extendedObj as TenjinSDK;
   } else {
     return new Proxy(
       {},
@@ -31,8 +96,11 @@ function makeTenjin() {
           throw new Error(LINKING_ERROR);
         },
       }
-    );
+    ) as TenjinSDK;
   }
 }
 
-export default makeTenjin();
+const Tenjin = makeTenjin();
+
+export default Tenjin;
+export type { TenjinCoarseConversionValue };

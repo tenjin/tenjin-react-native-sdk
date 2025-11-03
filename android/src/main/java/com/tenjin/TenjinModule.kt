@@ -89,6 +89,18 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   }
 
   @ReactMethod
+  override fun transactionWithDataSignature(
+    productName: String,
+    currencyCode: String,
+    quantity: Double,
+    unitPrice: Double,
+    purchaseData: String,
+    dataSignature: String
+  ) {
+    instance?.transaction(productName, currencyCode, quantity.toInt(), unitPrice, purchaseData, dataSignature)
+  }
+
+  @ReactMethod
   override fun eventWithName(name: String) {
     instance?.eventWithName(name)
   }

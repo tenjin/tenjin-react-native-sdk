@@ -83,7 +83,7 @@ Tenjin.optOutGoogleDMA()
 Tenjin.optInGoogleDMA()
 ```
 
-### Register transaction
+### Register transaction (iOS)
 ```javascript
 transactionWithReceipt(productName, currencyCode, quantity, unitPrice, transactionId, receipt)
 ```
@@ -94,6 +94,18 @@ Parameters:
 - `unitPrice`: Number
 - `transactionId`: String
 - `receipt`: String (Base 64)
+
+### Register transaction (Android)
+```javascript
+transactionWithDataSignature(productName, currencyCode, quantity, unitPrice, purchaseData, dataSignature)
+```
+Parameters:
+- `productName`: String
+- `currencyCode`: String
+- `quantity`: Number
+- `unitPrice`: Number
+- `purchaseData`: String
+- `dataSignature`: String
 
 ### Send event with name
 ```javascript
