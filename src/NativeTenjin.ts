@@ -30,6 +30,14 @@ export interface Spec extends TurboModule {
     transaction: string,
     data: string
   ): void;
+  transactionWithDataSignature(
+    productName: string,
+    currencyCode: string,
+    quantity: number,
+    unitPrice: number,
+    purchaseData: string,
+    dataSignature: string
+  ): void;
   eventWithName(name: string): void;
   eventWithNameAndValue(name: string, value: string): void;
   appendAppSubversion(version: number): void;
@@ -60,6 +68,7 @@ export interface Spec extends TurboModule {
     adPersonalization: boolean,
     adUserData: boolean
   ): void;
+  setCacheEventSetting(setting: boolean): void;
   setEncryptRequestsSetting(setting: boolean): void;
 }
 

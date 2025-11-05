@@ -84,6 +84,10 @@ public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implem
 
   @ReactMethod
   @DoNotStrip
+  public abstract void transactionWithDataSignature(String productName, String currencyCode, double quantity, double unitPrice, String purchaseData, String dataSignature);
+
+  @ReactMethod
+  @DoNotStrip
   public abstract void eventWithName(String name);
 
   @ReactMethod

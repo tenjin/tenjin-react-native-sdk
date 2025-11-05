@@ -38,6 +38,17 @@ export default function App() {
     onPress={() => Tenjin.eventWithName("TenjinTestEvent")}
   />
   <Button
+    title="Transaction"
+    onPress={() => Tenjin.transactionWithDataSignature(
+      'test_product',
+      'USD',
+      1,
+      4.99,
+      'purchase_data',
+      'signature'
+    )}
+  />
+  <Button
     title="Send event with value"
     onPress={() => Tenjin.eventWithNameAndValue("TenjinTestEvent", "2")}
   />
@@ -52,19 +63,27 @@ export default function App() {
   <Button
     title="Get customer user id"
     onPress={() => Tenjin.getCustomerUserId(
-      (success: boolean) => {
-        console.log(`Customer User ID: ${success}`);
+      (userId: string) => {
+        console.log(`Customer User ID: ${userId}`);
+      }
+    )}
+  />
+  <Button
+    title="Get analytics installation ID"
+    onPress={() => Tenjin.getAnalyticsInstallationId(
+      (id: string) => {
+        console.log(`Analytics Installation ID: ${id}`);
       }
     )}
   />
   <Button
     title="Attribution Info"
     onPress={() => Tenjin.getAttributionInfo(
-      (success: boolean) => {
-        console.log(`Attibution info found! ${success}`);
+      (info) => {
+        console.log(`Attribution info found!`, info);
       },
-      () => {
-        console.error(`Attribution info failed`);
+      (error) => {
+        console.error(`Attribution info failed:`, error);
       }
     )}
   />
