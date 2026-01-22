@@ -154,6 +154,61 @@ Tenjin.getAnalyticsInstallationId()
 ```
 Returns: callback -> `string`
 
+### User Profile - LiveOps Metrics
+
+The Tenjin SDK automatically tracks user engagement metrics to help you understand player behavior and lifetime value. These metrics are collected automatically and can be accessed programmatically.
+
+#### Automatic Tracking
+
+The SDK automatically tracks:
+- **Session metrics**: Session count, duration, first/last session dates
+- **In-App Purchases (IAP)**: Transaction count, revenue by currency, purchased product IDs
+- **Ad Revenue (ILRD)**: Impression-level revenue from supported ad networks
+
+#### Get User Profile Dictionary
+
+Retrieve the user profile as a dictionary with all metrics:
+
+```javascript
+Tenjin.getUserProfileDictionary((profile) => {
+  console.log('Session Count:', profile.session_count);
+  console.log('Total Session Time (ms):', profile.total_session_time);
+  console.log('Average Session Length (ms):', profile.average_session_length);
+  console.log('IAP Transaction Count:', profile.iap_transaction_count);
+  console.log('Total ILRD Revenue USD:', profile.total_ilrd_revenue_usd);
+});
+```
+
+**Dictionary Keys (Always Present):**
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `session_count` | `number` | Total sessions |
+| `total_session_time` | `number` | Total time (milliseconds) |
+| `average_session_length` | `number` | Average session (milliseconds) |
+| `last_session_length` | `number` | Last session (milliseconds) |
+| `iap_transaction_count` | `number` | Total IAP count |
+| `total_ilrd_revenue_usd` | `number` | Total ad revenue USD |
+
+**Dictionary Keys (Conditional - only if available):**
+
+| Key | Type | Description |
+|-----|------|-------------|
+| `first_session_date` | `string` | ISO8601 formatted date |
+| `last_session_date` | `string` | ISO8601 formatted date |
+| `current_session_length` | `number` | Active session duration (milliseconds) |
+| `iap_revenue_by_currency` | `object` | Map of currency → revenue |
+| `purchased_product_ids` | `array` | Sorted array of product IDs |
+| `ilrd_revenue_by_network` | `object` | Map of network → revenue |
+
+#### Reset User Profile
+
+Clear all user profile data (useful for testing or user logout):
+
+```javascript
+Tenjin.resetUserProfile();
+```
+
 ### Impression Level Revenue Data Integration (ILRD)
 Tenjin supports the ability to integrate with the Impression Level Ad Revenue (ILRD) feature from,
 

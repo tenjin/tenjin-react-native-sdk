@@ -242,6 +242,19 @@ RCT_EXPORT_METHOD(setAppStore:(NSString *)type)
   // Nothing to implement
 }
 
+RCT_EXPORT_METHOD(getUserProfileDictionary:(RCTResponseSenderBlock)callback)
+{
+    if (callback) {
+        NSDictionary *profileDict = [TenjinSDK getUserProfileAsDictionary];
+        callback(@[profileDict ?: @{}]);
+    }
+}
+
+RCT_EXPORT_METHOD(resetUserProfile)
+{
+    [TenjinSDK resetUserProfile];
+}
+
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:

@@ -103,6 +103,22 @@ export default function App() {
       "network_name": "AppLovin"
     }})}
   />
+  <Button
+    title="Get User Profile"
+    onPress={() => Tenjin.getUserProfileDictionary((profile) => {
+      console.log('===> User Profile Data:');
+      Object.entries(profile).forEach(([key, value]) => {
+        console.log(`===> ${key}: ${value}`);
+      });
+    })}
+  />
+  <Button
+    title="Reset User Profile"
+    onPress={() => {
+      Tenjin.resetUserProfile();
+      console.log('===> User Profile has been reset');
+    }}
+  />
     </View>
   );
 }

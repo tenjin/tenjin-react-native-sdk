@@ -228,6 +228,60 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
     // Nothing to implement
   }
 
+  @ReactMethod
+  override fun getUserProfileDictionary(callback: Callback) {
+    val profileDict = instance?.getUserProfileDictionary()
+    if (profileDict != null) {
+      try {
+        val writableMap = convertMapToWritableMap(profileDict)
+        callback.invoke(writableMap)
+      } catch (e: Exception) {
+        callback.invoke(WritableNativeMap())
+      }
+    } else {
+      callback.invoke(WritableNativeMap())
+    }
+  }
+
+  @ReactMethod
+  override fun resetUserProfile() {
+    instance?.resetUserProfile()
+  }
+
+  private fun convertMapToWritableMap(map: Map<String, Any>): WritableMap {
+    val writableMap = WritableNativeMap()
+    for ((key, value) in map) {
+      when (value) {
+        is Map<*, *> -> writableMap.putMap(key, convertMapToWritableMap(value as Map<String, Any>))
+        is List<*> -> writableMap.putArray(key, convertListToWritableArray(value))
+        is Boolean -> writableMap.putBoolean(key, value)
+        is Int -> writableMap.putInt(key, value)
+        is Long -> writableMap.putDouble(key, value.toDouble())
+        is Double -> writableMap.putDouble(key, value)
+        is String -> writableMap.putString(key, value)
+        else -> writableMap.putString(key, value.toString())
+      }
+    }
+    return writableMap
+  }
+
+  private fun convertListToWritableArray(list: List<*>): WritableArray {
+    val writableArray = WritableNativeArray()
+    for (value in list) {
+      when (value) {
+        is Map<*, *> -> writableArray.pushMap(convertMapToWritableMap(value as Map<String, Any>))
+        is List<*> -> writableArray.pushArray(convertListToWritableArray(value))
+        is Boolean -> writableArray.pushBoolean(value)
+        is Int -> writableArray.pushInt(value)
+        is Long -> writableArray.pushDouble(value.toDouble())
+        is Double -> writableArray.pushDouble(value)
+        is String -> writableArray.pushString(value)
+        else -> writableArray.pushString(value.toString())
+      }
+    }
+    return writableArray
+  }
+
   private fun readableToArray(readableArray: ReadableArray): Array<String> {
     return Array(readableArray.size()) { readableArray.getString(it) ?: "" }
   }

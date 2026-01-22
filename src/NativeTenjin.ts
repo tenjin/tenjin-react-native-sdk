@@ -70,6 +70,8 @@ export interface Spec extends TurboModule {
   ): void;
   setCacheEventSetting(setting: boolean): void;
   setEncryptRequestsSetting(setting: boolean): void;
+  getUserProfileDictionary(callback: (profile: JSONObject) => void): void;
+  resetUserProfile(): void;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Tenjin');

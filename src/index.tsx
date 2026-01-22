@@ -79,6 +79,8 @@ export interface TenjinSDK {
   ): void;
   setCacheEventSetting(setting: boolean): void;
   setEncryptRequestsSetting(setting: boolean): void;
+  getUserProfileDictionary(callback: (profile: Record<string, any>) => void): void;
+  resetUserProfile(): void;
 }
 
 function makeTenjin(): TenjinSDK {
