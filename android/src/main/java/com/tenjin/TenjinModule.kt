@@ -195,7 +195,7 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
 
   @ReactMethod
   override fun getAnalyticsInstallationId(callback: Callback) {
-    callback.invoke(instance?.analyticsInstallationId ?: "")
+    callback.invoke(instance?.getAnalyticsInstallationId() ?: "")
   }
 
   @ReactMethod
