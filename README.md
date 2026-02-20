@@ -120,7 +120,9 @@ Tenjin.eventWithNameAndValue(name, value)
 ```
 Parameters:
 - `name`: String
-- `value`: String
+- `value`: Number (integer)
+
+> **Note:** Passing a string value is deprecated and will show a warning. Please use a number instead.
 
 ### LiveOps Campaigns
 Tenjin supports retrieving of attributes, which are required for developers to get analytics installation id (previously known as tenjin reference id). This parameter can be used when there is no advertising id.

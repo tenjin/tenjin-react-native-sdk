@@ -39,7 +39,7 @@ export interface Spec extends TurboModule {
     dataSignature: string
   ): void;
   eventWithName(name: string): void;
-  eventWithNameAndValue(name: string, value: string): void;
+  eventWithNameAndValue(name: string, value: number): void;
   appendAppSubversion(version: number): void;
   updatePostbackConversionValue(conversionValue: number): void;
   updatePostbackConversionValueWithCoarseValue(
@@ -64,10 +64,7 @@ export interface Spec extends TurboModule {
   setCustomerUserId(userId: string): void;
   getCustomerUserId(callback: (userId: string) => void): void;
   getAnalyticsInstallationId(callback: (id: string) => void): void;
-  setGoogleDMAParameters(
-    adPersonalization: boolean,
-    adUserData: boolean
-  ): void;
+  setGoogleDMAParameters(adPersonalization: boolean, adUserData: boolean): void;
   setCacheEventSetting(setting: boolean): void;
   setEncryptRequestsSetting(setting: boolean): void;
   getUserProfileDictionary(callback: (profile: JSONObject) => void): void;

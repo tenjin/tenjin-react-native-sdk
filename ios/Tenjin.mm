@@ -94,9 +94,9 @@ RCT_EXPORT_METHOD(eventWithName:(NSString * _Nonnull)name)
     [TenjinSDK sendEventWithName:name];
 }
 
-RCT_EXPORT_METHOD(eventWithNameAndValue:(NSString * _Nonnull)name value:(NSString * _Nonnull)value)
+RCT_EXPORT_METHOD(eventWithNameAndValue:(NSString * _Nonnull)name value:(double)value)
 {
-    [TenjinSDK sendEventWithName:name andEventValue:value];
+    [TenjinSDK sendEventWithName:name andValue:(NSInteger)value];
 }
 
 RCT_EXPORT_METHOD(appendAppSubversion:(double)version)

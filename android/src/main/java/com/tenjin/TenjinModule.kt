@@ -106,8 +106,8 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   }
 
   @ReactMethod
-  override fun eventWithNameAndValue(name: String, value: String) {
-    instance?.eventWithNameAndValue(name, value)
+  override fun eventWithNameAndValue(name: String, value: Double) {
+    instance?.eventWithNameAndValue(name, value.toInt())
   }
 
   @ReactMethod
