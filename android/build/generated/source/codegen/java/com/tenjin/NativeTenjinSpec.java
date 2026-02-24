@@ -92,7 +92,7 @@ public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implem
 
   @ReactMethod
   @DoNotStrip
-  public abstract void eventWithNameAndValue(String name, String value);
+  public abstract void eventWithNameAndValue(String name, double value);
 
   @ReactMethod
   @DoNotStrip
@@ -161,4 +161,12 @@ public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implem
   @ReactMethod
   @DoNotStrip
   public abstract void setEncryptRequestsSetting(boolean setting);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void getUserProfileDictionary(Callback callback);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void resetUserProfile();
 }

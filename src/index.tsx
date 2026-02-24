@@ -17,7 +17,7 @@ const TenjinModule = isTurboModuleEnabled
   ? require('./NativeTenjin').default
   : NativeModules.Tenjin;
 
-console.log("TurboModule",TenjinModule);
+console.log('TurboModule', TenjinModule);
 
 export interface TenjinSDK {
   initialize(apiKey: string): void;
@@ -53,7 +53,7 @@ export interface TenjinSDK {
     dataSignature: string
   ): void;
   eventWithName(name: string): void;
-  eventWithNameAndValue(name: string, value: string): void;
+  eventWithNameAndValue(name: string, value: number | string): void;
   appendAppSubversion(subversion: number): void;
   updatePostbackConversionValue(
     conversionValue: number,
@@ -73,18 +73,38 @@ export interface TenjinSDK {
   setCustomerUserId(userId: string): void;
   getCustomerUserId(callback: (userId: string) => void): void;
   getAnalyticsInstallationId(callback: (id: string) => void): void;
-  setGoogleDMAParameters(
-    adPersonalization: boolean,
-    adUserData: boolean
-  ): void;
+  setGoogleDMAParameters(adPersonalization: boolean, adUserData: boolean): void;
   setCacheEventSetting(setting: boolean): void;
   setEncryptRequestsSetting(setting: boolean): void;
+  getUserProfileDictionary(
+    callback: (profile: Record<string, any>) => void
+  ): void;
+  resetUserProfile(): void;
+}
+
+function eventWithNameAndValue(name: string, value: number | string): void {
+  if (typeof value === 'string') {
+    console.warn(
+      'Tenjin: Passing a string value to eventWithNameAndValue is deprecated. Please use a number instead.'
+    );
+    const numValue = parseInt(value, 10);
+    if (isNaN(numValue)) {
+      console.error(
+        'Tenjin: Invalid value passed to eventWithNameAndValue. Value must be a valid number.'
+      );
+      return;
+    }
+    TenjinModule.eventWithNameAndValue(name, numValue);
+  } else {
+    TenjinModule.eventWithNameAndValue(name, value);
+  }
 }
 
 function makeTenjin(): TenjinSDK {
   if (TenjinModule) {
     const extendedObj = {
       updatePostbackConversionValue,
+      eventWithNameAndValue,
     };
     Object.setPrototypeOf(extendedObj, TenjinModule);
     return extendedObj as TenjinSDK;

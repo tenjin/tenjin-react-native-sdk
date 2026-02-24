@@ -94,9 +94,9 @@ RCT_EXPORT_METHOD(eventWithName:(NSString * _Nonnull)name)
     [TenjinSDK sendEventWithName:name];
 }
 
-RCT_EXPORT_METHOD(eventWithNameAndValue:(NSString * _Nonnull)name value:(NSString * _Nonnull)value)
+RCT_EXPORT_METHOD(eventWithNameAndValue:(NSString * _Nonnull)name value:(double)value)
 {
-    [TenjinSDK sendEventWithName:name andEventValue:value];
+    [TenjinSDK sendEventWithName:name andValue:(NSInteger)value];
 }
 
 RCT_EXPORT_METHOD(appendAppSubversion:(double)version)
@@ -240,6 +240,19 @@ RCT_EXPORT_METHOD(setEncryptRequestsSetting:(BOOL)setting)
 RCT_EXPORT_METHOD(setAppStore:(NSString *)type)
 {
   // Nothing to implement
+}
+
+RCT_EXPORT_METHOD(getUserProfileDictionary:(RCTResponseSenderBlock)callback)
+{
+    if (callback) {
+        NSDictionary *profileDict = [TenjinSDK getUserProfileAsDictionary];
+        callback(@[profileDict ?: @{}]);
+    }
+}
+
+RCT_EXPORT_METHOD(resetUserProfile)
+{
+    [TenjinSDK resetUserProfile];
 }
 
 
