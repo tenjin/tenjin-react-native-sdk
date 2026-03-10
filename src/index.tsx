@@ -17,8 +17,6 @@ const TenjinModule = isTurboModuleEnabled
   ? require('./NativeTenjin').default
   : NativeModules.Tenjin;
 
-console.log('TurboModule', TenjinModule);
-
 export interface TenjinSDK {
   initialize(apiKey: string): void;
   connect(): void;
