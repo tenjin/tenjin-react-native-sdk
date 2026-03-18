@@ -38,6 +38,18 @@ export interface Spec extends TurboModule {
     purchaseData: string,
     dataSignature: string
   ): void;
+  subscription(
+    productId: string,
+    currencyCode: string,
+    unitPrice: number,
+    iosTransactionId: string | null,
+    iosOriginalTransactionId: string | null,
+    iosReceipt: string | null,
+    iosSKTransaction: string | null,
+    androidPurchaseToken: string | null,
+    androidPurchaseData: string | null,
+    androidDataSignature: string | null
+  ): void;
   eventWithName(name: string): void;
   eventWithNameAndValue(name: string, value: number): void;
   appendAppSubversion(version: number): void;

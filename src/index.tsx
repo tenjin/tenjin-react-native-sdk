@@ -3,6 +3,10 @@ import {
   updatePostbackConversionValue,
   type TenjinCoarseConversionValue,
 } from './updatePostbackConversionValue';
+import {
+  subscription,
+  type SubscriptionParams,
+} from './subscription';
 
 const LINKING_ERROR =
   `The package 'react-native-tenjin' doesn't seem to be linked. Make sure: \n\n` +
@@ -50,6 +54,7 @@ export interface TenjinSDK {
     purchaseData: string,
     dataSignature: string
   ): void;
+  subscription(params: SubscriptionParams): void;
   eventWithName(name: string): void;
   eventWithNameAndValue(name: string, value: number | string): void;
   appendAppSubversion(subversion: number): void;
@@ -103,6 +108,7 @@ function makeTenjin(): TenjinSDK {
     const extendedObj = {
       updatePostbackConversionValue,
       eventWithNameAndValue,
+      subscription,
     };
     Object.setPrototypeOf(extendedObj, TenjinModule);
     return extendedObj as TenjinSDK;
@@ -121,4 +127,4 @@ function makeTenjin(): TenjinSDK {
 const Tenjin = makeTenjin();
 
 export default Tenjin;
-export type { TenjinCoarseConversionValue };
+export type { TenjinCoarseConversionValue, SubscriptionParams };

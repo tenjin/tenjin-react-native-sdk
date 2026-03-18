@@ -101,6 +101,29 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   }
 
   @ReactMethod
+  override fun subscription(
+    productId: String,
+    currencyCode: String,
+    unitPrice: Double,
+    iosTransactionId: String?,
+    iosOriginalTransactionId: String?,
+    iosReceipt: String?,
+    iosSKTransaction: String?,
+    androidPurchaseToken: String?,
+    androidPurchaseData: String?,
+    androidDataSignature: String?
+  ) {
+    instance?.subscription(
+      productId,
+      currencyCode,
+      unitPrice,
+      androidPurchaseToken ?: "",
+      androidPurchaseData ?: "",
+      androidDataSignature ?: ""
+    )
+  }
+
+  @ReactMethod
   override fun eventWithName(name: String) {
     instance?.eventWithName(name)
   }

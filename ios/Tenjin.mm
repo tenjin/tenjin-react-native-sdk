@@ -89,6 +89,27 @@ RCT_EXPORT_METHOD(transactionWithDataSignature:(NSString * _Nonnull)productName
 {
 }
 
+RCT_EXPORT_METHOD(subscription:(NSString * _Nonnull)productId
+                  currencyCode:(NSString * _Nonnull)currencyCode
+                  unitPrice:(double)unitPrice
+                  iosTransactionId:(NSString * _Nullable)iosTransactionId
+                  iosOriginalTransactionId:(NSString * _Nullable)iosOriginalTransactionId
+                  iosReceipt:(NSString * _Nullable)iosReceipt
+                  iosSKTransaction:(NSString * _Nullable)iosSKTransaction
+                  androidPurchaseToken:(NSString * _Nullable)androidPurchaseToken
+                  androidPurchaseData:(NSString * _Nullable)androidPurchaseData
+                  androidDataSignature:(NSString * _Nullable)androidDataSignature)
+{
+    NSDecimalNumber *unitPriceDecimal = [[NSDecimalNumber alloc] initWithDouble:unitPrice];
+    [TenjinSDK subscriptionWithProductName:productId
+                           andCurrencyCode:currencyCode
+                              andUnitPrice:unitPriceDecimal
+                          andTransactionId:iosTransactionId ?: @""
+                  andOriginalTransactionId:iosOriginalTransactionId ?: @""
+                          andBase64Receipt:iosReceipt ?: @""
+                         andSKTransaction:iosSKTransaction ?: @""];
+}
+
 RCT_EXPORT_METHOD(eventWithName:(NSString * _Nonnull)name)
 {
     [TenjinSDK sendEventWithName:name];

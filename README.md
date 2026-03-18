@@ -107,6 +107,26 @@ Parameters:
 - `purchaseData`: String
 - `dataSignature`: String
 
+### Subscription Tracking
+Track subscription purchases for server-side verification and attribution. See [SUBSCRIPTIONS_TRACKING.md](SUBSCRIPTIONS_TRACKING.md) for the full guide, including integration examples with `react-native-iap` and RevenueCat.
+
+```javascript
+Tenjin.subscription({
+  productId: 'com.example.monthly',
+  currencyCode: 'USD',
+  unitPrice: 9.99,
+  // iOS-only
+  iosTransactionId: '...',
+  iosOriginalTransactionId: '...',
+  iosReceipt: '...',
+  iosSKTransaction: '...',
+  // Android-only
+  androidPurchaseToken: '...',
+  androidPurchaseData: '...',
+  androidDataSignature: '...',
+});
+```
+
 ### Send event with name
 ```javascript
 Tenjin.eventWithName(name)
