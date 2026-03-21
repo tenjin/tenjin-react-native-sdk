@@ -10,7 +10,15 @@ const root = path.resolve(__dirname, '..');
  *
  * @type {import('metro-config').MetroConfig}
  */
-module.exports = getConfig(getDefaultConfig(__dirname), {
+const config = getConfig(getDefaultConfig(__dirname), {
   root,
   project: __dirname,
 });
+
+// Ensure example-only dependencies (react-native-iap, react-native-purchases)
+// are resolvable from the monorepo root
+config.resolver.nodeModulesPaths = [
+  path.resolve(__dirname, 'node_modules'),
+];
+
+module.exports = config;

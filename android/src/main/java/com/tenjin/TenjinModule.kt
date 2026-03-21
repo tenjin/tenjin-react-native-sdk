@@ -252,6 +252,13 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   }
 
   @ReactMethod
+  override fun subscriptionWithStoreKit(productId: String, currencyCode: String, unitPrice: Double, successCallback: Callback, errorCallback: Callback) {
+    // iOS only — no-op on Android
+    errorCallback.invoke("subscriptionWithStoreKit is only available on iOS")
+  }
+
+
+  @ReactMethod
   override fun getUserProfileDictionary(callback: Callback) {
     val profileDict = instance?.getUserProfileDictionary()
     if (profileDict != null) {

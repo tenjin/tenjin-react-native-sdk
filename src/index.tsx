@@ -83,6 +83,19 @@ export interface TenjinSDK {
     callback: (profile: Record<string, any>) => void
   ): void;
   resetUserProfile(): void;
+  /**
+   * Track a subscription by fetching the SK2 transaction natively (iOS only).
+   * Fetches the latest StoreKit 2 transaction for the product and sends it
+   * to Tenjin in a single native call. Use this when your IAP library
+   * (e.g. RevenueCat) doesn't expose SK2 transaction data.
+   */
+  subscriptionWithStoreKit(
+    productId: string,
+    currencyCode: string,
+    unitPrice: number,
+    successCallback: (success: boolean) => void,
+    errorCallback: (error: string) => void
+  ): void;
 }
 
 function eventWithNameAndValue(name: string, value: number | string): void {

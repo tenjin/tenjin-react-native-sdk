@@ -1,6 +1,13 @@
 #import "Tenjin.h"
 #import "TenjinSDK.h"
 
+@interface TenjinStoreKit : NSObject
++ (void)handleSubscriptionWithProductId:(NSString * _Nonnull)productId
+                           currencyCode:(NSString * _Nonnull)currencyCode
+                              unitPrice:(NSDecimalNumber * _Nonnull)unitPrice
+                             completion:(void (^ _Nonnull)(BOOL, NSString * _Nullable))completion;
+@end
+
 @implementation Tenjin
 
 RCT_EXPORT_MODULE(Tenjin)
@@ -276,6 +283,29 @@ RCT_EXPORT_METHOD(resetUserProfile)
     [TenjinSDK resetUserProfile];
 }
 
+
+RCT_EXPORT_METHOD(subscriptionWithStoreKit:(NSString * _Nonnull)productId
+                  currencyCode:(NSString * _Nonnull)currencyCode
+                  unitPrice:(double)unitPrice
+                  successCallback:(RCTResponseSenderBlock)successCallback
+                  errorCallback:(RCTResponseSenderBlock)errorCallback)
+{
+    if (@available(iOS 15.0, *)) {
+        NSDecimalNumber *unitPriceDecimal = [[NSDecimalNumber alloc] initWithDouble:unitPrice];
+        [TenjinStoreKit handleSubscriptionWithProductId:productId
+                                          currencyCode:currencyCode
+                                             unitPrice:unitPriceDecimal
+                                            completion:^(BOOL success, NSString *error) {
+            if (success) {
+                successCallback(@[@YES]);
+            } else {
+                errorCallback(@[error ?: @"Unknown error"]);
+            }
+        }];
+    } else {
+        errorCallback(@[@"StoreKit 2 requires iOS 15.0 or later"]);
+    }
+}
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:

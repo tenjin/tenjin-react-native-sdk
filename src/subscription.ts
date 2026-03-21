@@ -27,17 +27,23 @@ export interface SubscriptionParams {
   androidDataSignature?: string;
 }
 
+// Ensure value is a string or null — guards against numeric IDs from IAP libraries
+const toStringOrNull = (value: string | undefined): string | null => {
+  if (value == null) return null;
+  return typeof value === 'string' ? value : String(value);
+};
+
 export const subscription = (params: SubscriptionParams): void => {
   nativeTenjin.subscription(
-    params.productId,
-    params.currencyCode,
-    params.unitPrice,
-    params.iosTransactionId ?? null,
-    params.iosOriginalTransactionId ?? null,
-    params.iosReceipt ?? null,
-    params.iosSKTransaction ?? null,
-    params.androidPurchaseToken ?? null,
-    params.androidPurchaseData ?? null,
-    params.androidDataSignature ?? null
+    String(params.productId),
+    String(params.currencyCode),
+    Number(params.unitPrice),
+    toStringOrNull(params.iosTransactionId),
+    toStringOrNull(params.iosOriginalTransactionId),
+    toStringOrNull(params.iosReceipt),
+    toStringOrNull(params.iosSKTransaction),
+    toStringOrNull(params.androidPurchaseToken),
+    toStringOrNull(params.androidPurchaseData),
+    toStringOrNull(params.androidDataSignature)
   );
 };

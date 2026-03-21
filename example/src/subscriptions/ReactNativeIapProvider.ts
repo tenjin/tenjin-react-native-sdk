@@ -1,7 +1,7 @@
 /**
- * Subscription provider using react-native-iap.
+ * Subscription provider using react-native-iap (v14).
  *
- * Install: yarn add react-native-iap
+ * Install: yarn add react-native-iap react-native-nitro-modules
  *
  * This file demonstrates how to extract subscription purchase data from
  * react-native-iap and forward it to Tenjin for server-side verification.
@@ -13,10 +13,11 @@ import {
   endConnection,
   purchaseUpdatedListener,
   purchaseErrorListener,
-  requestSubscription,
+  requestPurchase,
   finishTransaction,
-  getReceiptIOS,
+  fetchProducts,
   type Purchase,
+  type PurchaseError,
   type EventSubscription,
 } from 'react-native-iap';
 import type { SubscriptionProvider, SubscriptionPurchase } from './types';
@@ -30,26 +31,29 @@ const SUBSCRIPTION_SKUS = Platform.select({
 class ReactNativeIapProvider implements SubscriptionProvider {
   private purchaseListener: EventSubscription | null = null;
   private errorListener: EventSubscription | null = null;
+  private products: Array<{ id: string; currency?: string | null; price?: number | null }> = [];
 
   async setup(): Promise<void> {
     await initConnection();
-    console.log('[IAP] Connection initialized');
+
+    // Must fetch products before purchasing — registers product IDs with StoreKit
+    const result = await fetchProducts({
+      skus: SUBSCRIPTION_SKUS,
+      type: 'subs',
+    });
+    this.products = result ?? [];
   }
 
   listen(onPurchase: (purchase: SubscriptionPurchase) => void): () => void {
-    this.purchaseListener = purchaseUpdatedListener(async (purchase: Purchase) => {
-      console.log('[IAP] Purchase received:', purchase.productId);
-
-      try {
-        const subscriptionData = await this.extractPurchaseData(purchase);
+    this.purchaseListener = purchaseUpdatedListener(
+      async (purchase: Purchase) => {
+        const subscriptionData = this.extractPurchaseData(purchase);
         onPurchase(subscriptionData);
         await finishTransaction({ purchase, isConsumable: false });
-      } catch (error) {
-        console.error('[IAP] Error processing purchase:', error);
       }
-    });
+    );
 
-    this.errorListener = purchaseErrorListener((error: { message: string }) => {
+    this.errorListener = purchaseErrorListener((error: PurchaseError) => {
       console.error('[IAP] Purchase error:', error.message);
     });
 
@@ -62,46 +66,77 @@ class ReactNativeIapProvider implements SubscriptionProvider {
   }
 
   async purchaseSubscription(productId: string): Promise<void> {
-    if (Platform.OS === 'ios') {
-      await requestSubscription({ request: { sku: productId } });
-    } else {
-      await requestSubscription({
-        request: {
-          skus: [productId],
-        },
-      });
-    }
+    await requestPurchase({
+      request: Platform.select({
+        ios: { apple: { sku: productId } },
+        android: { google: { skus: [productId] } },
+      })! as any,
+      type: 'subs',
+    });
   }
 
   async teardown(): Promise<void> {
     this.purchaseListener?.remove();
     this.errorListener?.remove();
     await endConnection();
-    console.log('[IAP] Connection ended');
   }
 
-  private async extractPurchaseData(purchase: Purchase): Promise<SubscriptionPurchase> {
+  private extractPurchaseData(purchase: Purchase): SubscriptionPurchase {
+    const product = this.products.find((p) => p.id === purchase.productId);
+
     const base: SubscriptionPurchase = {
       productId: purchase.productId,
-      currencyCode: 'USD', // In production, get from product details via fetchProducts()
-      unitPrice: 0,        // In production, get from product details via fetchProducts()
+      currencyCode: product?.currency ?? 'USD',
+      unitPrice: product?.price ?? 0,
     };
 
-    if (Platform.OS === 'ios') {
-      const receipt = await getReceiptIOS();
+    if (purchase.platform === 'ios') {
+      const iosPurchase = purchase as any;
+      // purchaseToken on iOS is the JWS (JSON Web Signature) signed transaction
+      const jws = purchase.purchaseToken ?? '';
+
+      // The JWS payload (middle segment) is the SK2 transaction jsonRepresentation
+      let jsonRepresentation = '';
+      if (jws) {
+        const parts = jws.split('.');
+        if (parts.length === 3) {
+          try {
+            jsonRepresentation = atob(parts[1]!);
+          } catch {
+            jsonRepresentation = '';
+          }
+        }
+      }
+
+      // Extract transaction IDs from jsonRepresentation when available,
+      // as the mapped purchase object may have placeholder values in sandbox
+      let transactionId = String(purchase.id ?? '');
+      let originalTransactionId = String(
+        iosPurchase.originalTransactionIdentifierIOS ?? purchase.id ?? ''
+      );
+      if (jsonRepresentation) {
+        try {
+          const txData = JSON.parse(jsonRepresentation);
+          if (txData.transactionId) transactionId = String(txData.transactionId);
+          if (txData.originalTransactionId) originalTransactionId = String(txData.originalTransactionId);
+        } catch { /* use mapped values */ }
+      }
+
       return {
         ...base,
-        iosTransactionId: purchase.transactionId,
-        iosOriginalTransactionId: (purchase as any).originalTransactionIdentifierIOS,
-        iosReceipt: receipt,
-        iosSKTransaction: (purchase as any).transactionReceipt,
+        iosTransactionId: transactionId,
+        iosOriginalTransactionId: originalTransactionId,
+        iosReceipt: jws,
+        iosSKTransaction: jsonRepresentation,
       };
     } else {
+      const androidPurchase = purchase as any;
       return {
         ...base,
-        androidPurchaseToken: (purchase as any).purchaseToken,
-        androidPurchaseData: (purchase as any).dataAndroid,
-        androidDataSignature: (purchase as any).signatureAndroid,
+        androidPurchaseToken:
+          androidPurchase.purchaseTokenAndroid ?? purchase.purchaseToken ?? '',
+        androidPurchaseData: androidPurchase.dataAndroid ?? '',
+        androidDataSignature: androidPurchase.signatureAndroid ?? '',
       };
     }
   }

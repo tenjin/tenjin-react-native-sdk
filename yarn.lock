@@ -10470,6 +10470,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-nitro-modules@npm:^0.35.0":
+  version: 0.35.2
+  resolution: "react-native-nitro-modules@npm:0.35.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 7cf629d4d0d6025b06c766b043374c71eb1771da98a50fb34a4630704ab6252792fc03beda26f21d8cbfe6cd4ec286ce059e7824e4cf344b20e1808aebb298b9
+  languageName: node
+  linkType: hard
+
 "react-native-purchases@npm:^9.13.0":
   version: 9.13.0
   resolution: "react-native-purchases@npm:9.13.0"
@@ -10505,6 +10515,7 @@ __metadata:
     react-native: 0.79.2
     react-native-builder-bob: ^0.40.17
     react-native-iap: ^14.7.17
+    react-native-nitro-modules: ^0.35.0
     react-native-purchases: ^9.13.0
   languageName: unknown
   linkType: soft

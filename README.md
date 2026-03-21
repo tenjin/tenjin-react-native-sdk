@@ -111,6 +111,7 @@ Parameters:
 Track subscription purchases for server-side verification and attribution. See [SUBSCRIPTIONS_TRACKING.md](SUBSCRIPTIONS_TRACKING.md) for the full guide, including integration examples with `react-native-iap` and RevenueCat.
 
 ```javascript
+// Option 1: Pass all parameters manually (e.g., from react-native-iap)
 Tenjin.subscription({
   productId: 'com.example.monthly',
   currencyCode: 'USD',
@@ -125,6 +126,16 @@ Tenjin.subscription({
   androidPurchaseData: '...',
   androidDataSignature: '...',
 });
+
+// Option 2: Let the SDK fetch SK2 data natively (iOS only)
+// Recommended for RevenueCat and other IAP libraries that don't expose SK2 data
+Tenjin.subscriptionWithStoreKit(
+  'com.example.monthly', // productId
+  'USD',                  // currencyCode
+  9.99,                   // unitPrice
+  () => {},               // success
+  (error) => {}           // error
+);
 ```
 
 ### Send event with name

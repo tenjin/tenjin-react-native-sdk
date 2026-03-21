@@ -64,6 +64,18 @@ export default function App() {
         }}
       />
       <Button
+        title="Subscription (StoreKit native)"
+        onPress={() =>
+          Tenjin.subscriptionWithStoreKit(
+            'com.example.monthly',
+            'USD',
+            9.99,
+            () => console.log('[App] subscriptionWithStoreKit succeeded'),
+            (error) => console.error('[App] subscriptionWithStoreKit failed:', error)
+          )
+        }
+      />
+      <Button
         title="Subscription (manual test)"
         onPress={() =>
           Tenjin.subscription({

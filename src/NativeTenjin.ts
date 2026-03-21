@@ -81,6 +81,13 @@ export interface Spec extends TurboModule {
   setEncryptRequestsSetting(setting: boolean): void;
   getUserProfileDictionary(callback: (profile: JSONObject) => void): void;
   resetUserProfile(): void;
+  subscriptionWithStoreKit(
+    productId: string,
+    currencyCode: string,
+    unitPrice: number,
+    successCallback: (success: boolean) => void,
+    errorCallback: (error: string) => void
+  ): void;
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Tenjin');

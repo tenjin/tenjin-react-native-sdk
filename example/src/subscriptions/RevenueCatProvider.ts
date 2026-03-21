@@ -3,25 +3,25 @@
  *
  * Install: yarn add react-native-purchases
  *
- * This file demonstrates how to extract subscription purchase data from
- * RevenueCat and forward it to Tenjin for server-side verification.
+ * RevenueCat does not expose SK2 transaction data at the JS level, so we use
+ * Tenjin.subscriptionWithStoreKit() which fetches the SK2 transaction and
+ * sends it to Tenjin in a single native call.
  */
 
-import Purchases, {
-  type CustomerInfo,
-  type PurchasesPackage,
-} from 'react-native-purchases';
+import { Platform } from 'react-native';
+import Purchases from 'react-native-purchases';
+import Tenjin from 'react-native-tenjin';
+import type { CustomerInfo } from 'react-native-purchases';
+import type { PurchasesEntitlementInfo } from '@revenuecat/purchases-typescript-internal';
 import type { SubscriptionProvider, SubscriptionPurchase } from './types';
 
 // Replace with your RevenueCat API keys
 const REVENUECAT_API_KEY_IOS = 'YOUR_REVENUECAT_IOS_API_KEY';
 const REVENUECAT_API_KEY_ANDROID = 'YOUR_REVENUECAT_ANDROID_API_KEY';
 
-import { Platform } from 'react-native';
-
 class RevenueCatProvider implements SubscriptionProvider {
   private trackedTransactions = new Set<string>();
-  private removeListener: (() => void) | null = null;
+  private listener: ((info: CustomerInfo) => void) | null = null;
 
   async setup(): Promise<void> {
     const apiKey = Platform.select({
@@ -30,19 +30,20 @@ class RevenueCatProvider implements SubscriptionProvider {
     });
 
     Purchases.configure({ apiKey: apiKey! });
-    console.log('[RevenueCat] Configured');
   }
 
   listen(onPurchase: (purchase: SubscriptionPurchase) => void): () => void {
-    const listener = async (customerInfo: CustomerInfo) => {
-      for (const entitlement of Object.values(customerInfo.entitlements.active) as any[]) {
+    this.listener = async (customerInfo: CustomerInfo) => {
+      const entitlements = Object.values(
+        customerInfo.entitlements.active
+      ) as PurchasesEntitlementInfo[];
+
+      for (const entitlement of entitlements) {
         const productId = entitlement.productIdentifier;
 
         // Deduplicate: only track each product once per session
         if (this.trackedTransactions.has(productId)) continue;
         this.trackedTransactions.add(productId);
-
-        console.log('[RevenueCat] New active entitlement:', productId);
 
         try {
           const purchase = await this.extractPurchaseData(productId);
@@ -55,23 +56,20 @@ class RevenueCatProvider implements SubscriptionProvider {
       }
     };
 
-    Purchases.addCustomerInfoUpdateListener(listener);
-    this.removeListener = () => {
-      Purchases.removeCustomerInfoUpdateListener(listener);
-    };
+    Purchases.addCustomerInfoUpdateListener(this.listener);
 
     return () => {
-      this.removeListener?.();
-      this.removeListener = null;
+      if (this.listener) {
+        Purchases.removeCustomerInfoUpdateListener(this.listener);
+        this.listener = null;
+      }
     };
   }
 
   async purchaseSubscription(productId: string): Promise<void> {
     const offerings = await Purchases.getOfferings();
     const packages = offerings.current?.availablePackages ?? [];
-    const pkg = packages.find(
-      (p: PurchasesPackage) => p.product.identifier === productId
-    );
+    const pkg = packages.find((p) => p.product.identifier === productId);
 
     if (pkg) {
       await Purchases.purchasePackage(pkg);
@@ -81,31 +79,40 @@ class RevenueCatProvider implements SubscriptionProvider {
   }
 
   async teardown(): Promise<void> {
-    this.removeListener?.();
-    this.removeListener = null;
+    if (this.listener) {
+      Purchases.removeCustomerInfoUpdateListener(this.listener);
+      this.listener = null;
+    }
     this.trackedTransactions.clear();
-    console.log('[RevenueCat] Cleaned up');
   }
 
   private async extractPurchaseData(
     productId: string
   ): Promise<SubscriptionPurchase | null> {
-    // Get product price info from offerings
     const offerings = await Purchases.getOfferings();
     const packages = offerings.current?.availablePackages ?? [];
     const product = packages.find(
-      (p: PurchasesPackage) => p.product.identifier === productId
+      (p) => p.product.identifier === productId
     )?.product;
 
     if (!product) {
-      console.warn(`[RevenueCat] Product not found: ${productId}`);
       return null;
     }
 
-    // RevenueCat abstracts away platform-specific receipt data.
-    // For basic subscription tracking, productId + price is sufficient.
-    // For full server-side verification, you may need to access the
-    // underlying store transaction via RevenueCat's backend webhooks.
+    // On iOS, use subscriptionWithStoreKit to fetch the SK2 transaction
+    // and send it to Tenjin in a single native call
+    if (Platform.OS === 'ios') {
+      Tenjin.subscriptionWithStoreKit(
+        product.identifier,
+        product.currencyCode,
+        product.price,
+        () => {},
+        (error) => console.error('[RevenueCat] subscriptionWithStoreKit failed:', error)
+      );
+      // Return null since Tenjin.subscriptionWithStoreKit handles everything natively
+      return null;
+    }
+
     return {
       productId: product.identifier,
       currencyCode: product.currencyCode,
