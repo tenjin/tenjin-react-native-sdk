@@ -3,6 +3,10 @@ import {
   updatePostbackConversionValue,
   type TenjinCoarseConversionValue,
 } from './updatePostbackConversionValue';
+import {
+  subscription,
+  type SubscriptionParams,
+} from './subscription';
 
 const LINKING_ERROR =
   `The package 'react-native-tenjin' doesn't seem to be linked. Make sure: \n\n` +
@@ -50,6 +54,7 @@ export interface TenjinSDK {
     purchaseData: string,
     dataSignature: string
   ): void;
+  subscription(params: SubscriptionParams): void;
   eventWithName(name: string): void;
   eventWithNameAndValue(name: string, value: number | string): void;
   appendAppSubversion(subversion: number): void;
@@ -78,6 +83,19 @@ export interface TenjinSDK {
     callback: (profile: Record<string, any>) => void
   ): void;
   resetUserProfile(): void;
+  /**
+   * Track a subscription by fetching the SK2 transaction natively (iOS only).
+   * Fetches the latest StoreKit 2 transaction for the product and sends it
+   * to Tenjin in a single native call. Use this when your IAP library
+   * (e.g. RevenueCat) doesn't expose SK2 transaction data.
+   */
+  subscriptionWithStoreKit(
+    productId: string,
+    currencyCode: string,
+    unitPrice: number,
+    successCallback: (success: boolean) => void,
+    errorCallback: (error: string) => void
+  ): void;
 }
 
 function eventWithNameAndValue(name: string, value: number | string): void {
@@ -103,6 +121,7 @@ function makeTenjin(): TenjinSDK {
     const extendedObj = {
       updatePostbackConversionValue,
       eventWithNameAndValue,
+      subscription,
     };
     Object.setPrototypeOf(extendedObj, TenjinModule);
     return extendedObj as TenjinSDK;
@@ -121,4 +140,4 @@ function makeTenjin(): TenjinSDK {
 const Tenjin = makeTenjin();
 
 export default Tenjin;
-export type { TenjinCoarseConversionValue };
+export type { TenjinCoarseConversionValue, SubscriptionParams };
