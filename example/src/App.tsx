@@ -1,14 +1,43 @@
-import { StyleSheet, View, Button } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { StyleSheet, Button, ScrollView } from 'react-native';
 import Tenjin from 'react-native-tenjin';
 import { NativeModules } from 'react-native';
+import {
+  Provider,
+  subscriptionSkus,
+  type SubscriptionProvider,
+} from './subscriptions';
 
 console.log('[Tenjin]: NativeModules.Tenjin:', NativeModules.Tenjin);
 
 export default function App() {
   console.log(Tenjin);
 
+  const providerRef = useRef<SubscriptionProvider | null>(null);
+
+  useEffect(() => {
+    const provider = new Provider();
+    providerRef.current = provider;
+
+    provider.setup().then(() => {
+      const unlisten = provider.listen((purchase) => {
+        console.log('[Tenjin] Tracking subscription:', purchase.productId);
+        Tenjin.subscription(purchase);
+      });
+
+      return () => {
+        unlisten();
+        provider.teardown();
+      };
+    });
+
+    return () => {
+      provider.teardown();
+    };
+  }, []);
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Button
         title="Initialize"
         onPress={() => {
@@ -24,6 +53,45 @@ export default function App() {
       />
       <Button title="Opt In" onPress={() => Tenjin.optIn()} />
       <Button title="Opt Out" onPress={() => Tenjin.optOut()} />
+      <Button
+        title="Subscription (via IAP provider)"
+        onPress={() => {
+          const sku = subscriptionSkus[0];
+          if (sku) {
+            console.log('[App] Requesting subscription:', sku);
+            providerRef.current?.purchaseSubscription(sku);
+          }
+        }}
+      />
+      <Button
+        title="Subscription (StoreKit native)"
+        onPress={() =>
+          Tenjin.subscriptionWithStoreKit(
+            'com.example.monthly',
+            'USD',
+            9.99,
+            () => console.log('[App] subscriptionWithStoreKit succeeded'),
+            (error) => console.error('[App] subscriptionWithStoreKit failed:', error)
+          )
+        }
+      />
+      <Button
+        title="Subscription (manual test)"
+        onPress={() =>
+          Tenjin.subscription({
+            productId: 'test_subscription_monthly',
+            currencyCode: 'USD',
+            unitPrice: 9.99,
+            iosTransactionId: 'ios_txn_123',
+            iosOriginalTransactionId: 'ios_orig_txn_123',
+            iosReceipt: 'base64_receipt_data',
+            iosSKTransaction: '{"productID":"test_subscription_monthly"}',
+            androidPurchaseToken: 'android_token_123',
+            androidPurchaseData: '{"orderId":"GPA.1234"}',
+            androidDataSignature: 'android_signature',
+          })
+        }
+      />
       <Button
         title="Send event"
         onPress={() => Tenjin.eventWithName('TenjinTestEvent')}
@@ -120,19 +188,15 @@ export default function App() {
           console.log('===> User Profile has been reset');
         }}
       />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+    paddingVertical: 40,
   },
 });

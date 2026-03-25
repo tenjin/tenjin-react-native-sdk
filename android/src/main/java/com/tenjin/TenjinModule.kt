@@ -101,6 +101,29 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   }
 
   @ReactMethod
+  override fun subscription(
+    productId: String,
+    currencyCode: String,
+    unitPrice: Double,
+    iosTransactionId: String?,
+    iosOriginalTransactionId: String?,
+    iosReceipt: String?,
+    iosSKTransaction: String?,
+    androidPurchaseToken: String?,
+    androidPurchaseData: String?,
+    androidDataSignature: String?
+  ) {
+    instance?.subscription(
+      productId,
+      currencyCode,
+      unitPrice,
+      androidPurchaseToken ?: "",
+      androidPurchaseData ?: "",
+      androidDataSignature ?: ""
+    )
+  }
+
+  @ReactMethod
   override fun eventWithName(name: String) {
     instance?.eventWithName(name)
   }
@@ -227,6 +250,13 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   override fun updatePostbackConversionValueWithCoarseValueAndLockWindow(conversionValue: Double, coarseValue: String, lockWindow: Boolean) {
     // Nothing to implement
   }
+
+  @ReactMethod
+  override fun subscriptionWithStoreKit(productId: String, currencyCode: String, unitPrice: Double, successCallback: Callback, errorCallback: Callback) {
+    // iOS only — no-op on Android
+    errorCallback.invoke("subscriptionWithStoreKit is only available on iOS")
+  }
+
 
   @ReactMethod
   override fun getUserProfileDictionary(callback: Callback) {

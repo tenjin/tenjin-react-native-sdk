@@ -8,6 +8,61 @@ PODS:
   - hermes-engine (0.79.2):
     - hermes-engine/Pre-built (= 0.79.2)
   - hermes-engine/Pre-built (0.79.2)
+  - NitroIap (14.7.17):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - NitroModules
+    - openiap (= 1.3.15)
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - NitroModules (0.35.2):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-callinvoker
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-hermes
+    - React-ImageManager
+    - React-jsi
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-renderercss
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
+  - openiap (1.3.15)
+  - PurchasesHybridCommon (17.51.1):
+    - RevenueCat (= 5.65.0)
   - RCT-Folly (2024.11.18.00):
     - boost
     - DoubleConversion
@@ -1654,8 +1709,12 @@ PODS:
     - React-logger (= 0.79.2)
     - React-perflogger (= 0.79.2)
     - React-utils (= 0.79.2)
+  - RevenueCat (5.65.0)
+  - RNPurchases (9.13.0):
+    - PurchasesHybridCommon (= 17.51.1)
+    - React-Core
   - SocketRocket (0.7.1)
-  - Tenjin (1.3.0):
+  - Tenjin (1.3.2):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1678,9 +1737,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - TenjinSDK (= 1.15.1)
+    - TenjinSDK (= 1.16.0)
     - Yoga
-  - TenjinSDK (1.15.1)
+  - TenjinSDK (1.16.0)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -1691,6 +1750,8 @@ DEPENDENCIES:
   - fmt (from `../node_modules/react-native/third-party-podspecs/fmt.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
+  - NitroIap (from `../node_modules/react-native-iap`)
+  - NitroModules (from `../node_modules/react-native-nitro-modules`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCT-Folly/Fabric (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTDeprecation (from `../node_modules/react-native/ReactApple/Libraries/RCTFoundation/RCTDeprecation`)
@@ -1755,11 +1816,15 @@ DEPENDENCIES:
   - ReactAppDependencyProvider (from `build/generated/ios`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNPurchases (from `../node_modules/react-native-purchases`)
   - Tenjin (from `../..`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
   trunk:
+    - openiap
+    - PurchasesHybridCommon
+    - RevenueCat
     - SocketRocket
     - TenjinSDK
 
@@ -1779,6 +1844,10 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2025-03-03-RNv0.79.0-bc17d964d03743424823d7dd1a9f37633459c5c5
+  NitroIap:
+    :path: "../node_modules/react-native-iap"
+  NitroModules:
+    :path: "../node_modules/react-native-nitro-modules"
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTDeprecation:
@@ -1903,6 +1972,8 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNPurchases:
+    :path: "../node_modules/react-native-purchases"
   Tenjin:
     :path: "../.."
   Yoga:
@@ -1916,6 +1987,10 @@ SPEC CHECKSUMS:
   fmt: a40bb5bd0294ea969aaaba240a927bd33d878cdd
   glog: 5683914934d5b6e4240e497e0f4a3b42d1854183
   hermes-engine: 314be5250afa5692b57b4dd1705959e1973a8ebe
+  NitroIap: acbca08f3d2f7b4d8787c2e44e232f937fd91a72
+  NitroModules: f98012a35d4dfa89a98638475457eb68bf4984f1
+  openiap: 2825d732c9d081fd5a5d0d09b2f67c2d655f4ed4
+  PurchasesHybridCommon: 204de8c7d0b182240ac708cf6a05881bd99ceca9
   RCT-Folly: e78785aa9ba2ed998ea4151e314036f6c49e6d82
   RCTDeprecation: 83ffb90c23ee5cea353bd32008a7bca100908f8c
   RCTRequired: eb7c0aba998009f47a540bec9e9d69a54f68136e
@@ -1978,9 +2053,11 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 04d5eb15eb46be6720e17a4a7fa92940a776e584
   ReactCodegen: c63eda03ba1d94353fb97b031fc84f75a0d125ba
   ReactCommon: 76d2dc87136d0a667678668b86f0fca0c16fdeb0
+  RevenueCat: 9a37739bdf42af84dd87e023db340de7e0f9d874
+  RNPurchases: f0abaaee45a4ec59c7ff62dcebba8b2a3e384886
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  Tenjin: a2b84811c0fec931e24848c39eb346ff5e297f2c
-  TenjinSDK: 69dbef46eea50b552f656b2e988601e4d77cf413
+  Tenjin: a1764682de6a72fd572448c974ca492f42c0c143
+  TenjinSDK: d550ccd6f82a0b2e27a93541c891f74f6c3e1b39
   Yoga: c758bfb934100bb4bf9cbaccb52557cee35e8bdf
 
 PODFILE CHECKSUM: 7c670c43342680449d8bab7ffa5ff0c70ede6a65

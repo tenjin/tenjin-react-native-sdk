@@ -1,6 +1,13 @@
 #import "Tenjin.h"
 #import "TenjinSDK.h"
 
+@interface TenjinStoreKit : NSObject
++ (void)handleSubscriptionWithProductId:(NSString * _Nonnull)productId
+                           currencyCode:(NSString * _Nonnull)currencyCode
+                              unitPrice:(NSDecimalNumber * _Nonnull)unitPrice
+                             completion:(void (^ _Nonnull)(BOOL, NSString * _Nullable))completion;
+@end
+
 @implementation Tenjin
 
 RCT_EXPORT_MODULE(Tenjin)
@@ -87,6 +94,27 @@ RCT_EXPORT_METHOD(transactionWithDataSignature:(NSString * _Nonnull)productName
                   purchaseData:(NSString * _Nonnull)purchaseData
                   dataSignature:(NSString * _Nonnull)dataSignature)
 {
+}
+
+RCT_EXPORT_METHOD(subscription:(NSString * _Nonnull)productId
+                  currencyCode:(NSString * _Nonnull)currencyCode
+                  unitPrice:(double)unitPrice
+                  iosTransactionId:(NSString * _Nullable)iosTransactionId
+                  iosOriginalTransactionId:(NSString * _Nullable)iosOriginalTransactionId
+                  iosReceipt:(NSString * _Nullable)iosReceipt
+                  iosSKTransaction:(NSString * _Nullable)iosSKTransaction
+                  androidPurchaseToken:(NSString * _Nullable)androidPurchaseToken
+                  androidPurchaseData:(NSString * _Nullable)androidPurchaseData
+                  androidDataSignature:(NSString * _Nullable)androidDataSignature)
+{
+    NSDecimalNumber *unitPriceDecimal = [[NSDecimalNumber alloc] initWithDouble:unitPrice];
+    [TenjinSDK subscriptionWithProductName:productId
+                           andCurrencyCode:currencyCode
+                              andUnitPrice:unitPriceDecimal
+                          andTransactionId:iosTransactionId ?: @""
+                  andOriginalTransactionId:iosOriginalTransactionId ?: @""
+                          andBase64Receipt:iosReceipt ?: @""
+                         andSKTransaction:iosSKTransaction ?: @""];
 }
 
 RCT_EXPORT_METHOD(eventWithName:(NSString * _Nonnull)name)
@@ -255,6 +283,29 @@ RCT_EXPORT_METHOD(resetUserProfile)
     [TenjinSDK resetUserProfile];
 }
 
+
+RCT_EXPORT_METHOD(subscriptionWithStoreKit:(NSString * _Nonnull)productId
+                  currencyCode:(NSString * _Nonnull)currencyCode
+                  unitPrice:(double)unitPrice
+                  successCallback:(RCTResponseSenderBlock)successCallback
+                  errorCallback:(RCTResponseSenderBlock)errorCallback)
+{
+    if (@available(iOS 15.0, *)) {
+        NSDecimalNumber *unitPriceDecimal = [[NSDecimalNumber alloc] initWithDouble:unitPrice];
+        [TenjinStoreKit handleSubscriptionWithProductId:productId
+                                          currencyCode:currencyCode
+                                             unitPrice:unitPriceDecimal
+                                            completion:^(BOOL success, NSString *error) {
+            if (success) {
+                successCallback(@[@YES]);
+            } else {
+                errorCallback(@[error ?: @"Unknown error"]);
+            }
+        }];
+    } else {
+        errorCallback(@[@"StoreKit 2 requires iOS 15.0 or later"]);
+    }
+}
 
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
