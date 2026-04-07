@@ -1,3 +1,25 @@
+// --- START QUICK NETWORK LOGGER ---
+const originalFetch = global.fetch;
+global.fetch = async (...args) => {
+  const url = args[0];
+  const options = args[1];
+
+  console.log(`🚀 [Network Request] ${options?.method || 'GET'}: ${url}`);
+  if (options?.body) {
+    console.log('📦 Body:', options.body);
+  }
+
+  try {
+    const response = await originalFetch(...args);
+    console.log(`✅ [Response] ${url} | Status: ${response.status}`);
+    return response;
+  } catch (error) {
+    console.error(`❌ [Network Error] ${url}:`, error);
+    throw error;
+  }
+};
+// --- END QUICK NETWORK LOGGER ---
+
 import { useEffect, useRef } from 'react';
 import { StyleSheet, Button, ScrollView } from 'react-native';
 import Tenjin from 'react-native-tenjin';
