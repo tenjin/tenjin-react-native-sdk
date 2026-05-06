@@ -2,6 +2,8 @@
 
 Track subscription purchases with Tenjin for server-side verification and attribution.
 
+> **Platform support:** subscription tracking is iOS only.
+
 ## Method
 
 ```javascript
