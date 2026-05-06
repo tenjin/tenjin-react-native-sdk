@@ -113,14 +113,7 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
     androidPurchaseData: String?,
     androidDataSignature: String?
   ) {
-    instance?.subscription(
-      productId,
-      currencyCode,
-      unitPrice,
-      androidPurchaseToken ?: "",
-      androidPurchaseData ?: "",
-      androidDataSignature ?: ""
-    )
+    // iOS only — Android Tenjin SDK does not support subscription tracking yet
   }
 
   @ReactMethod
