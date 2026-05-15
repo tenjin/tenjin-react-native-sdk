@@ -9,6 +9,16 @@ The Tenjin React Native Plugin allows users to track events and installs in thei
 On iOS:
 For AppTrackingTransparency, be sure to update your project `.plist` file and add `NSUserTrackingUsageDescription` along with the text message you want to display to users. This library is only available in iOS 14.0+. For further information on this, you can check our [iOS documentation](https://github.com/tenjin/tenjin-ios-sdk#-skadnetwork-and-ios-15-advertiser-postbacks)
 
+# Integrate with an AI assistant (LLM)
+
+You can integrate the Tenjin React Native SDK with the help of an AI assistant (Claude, Cursor, GitHub Copilot, etc.). Paste the following prompt into your assistant of choice:
+
+```
+Add Tenjin SDK to my project using: https://raw.githubusercontent.com/tenjin/sdk-llm-guides/main/guides/react-native/llm-guide.md
+```
+
+The guide walks the assistant through the complete integration. For more details, see the [Tenjin SDK Guides for LLMs](https://github.com/tenjin/sdk-llm-guides).
+
 # Plugin Integration
 
 ## Getting started
@@ -158,9 +168,6 @@ Parameters:
 ### LiveOps Campaigns
 Tenjin supports retrieving of attributes, which are required for developers to get analytics installation id (previously known as tenjin reference id). This parameter can be used when there is no advertising id.
 
-> [!WARNING]
-> Attribution Info is a paid feature, so please contact your Tenjin account manager if you are interested in.
-
 ### Append app subversion
 ```javascript
 Tenjin.appendAppSubversion(subversion)
@@ -251,9 +258,6 @@ Tenjin supports the ability to integrate with the Impression Level Ad Revenue (I
 - TopOn
 - Clever Ads Solutions (CAS)
 - TradPlus
-
-> [!WARNING]
-> ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.
 
 ### Send Google DMA Parameters
 ```javascript
