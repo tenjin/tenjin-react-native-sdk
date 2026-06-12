@@ -21,6 +21,13 @@ const TenjinModule = isTurboModuleEnabled
   ? require('./NativeTenjin').default
   : NativeModules.Tenjin;
 
+// Keep in sync with the "version" field in package.json. Reported to Tenjin as plugin_version.
+const PLUGIN_VERSION = '1.4.0';
+
+function initialize(apiKey: string): void {
+  TenjinModule.initialize(apiKey, PLUGIN_VERSION);
+}
+
 export interface TenjinSDK {
   initialize(apiKey: string): void;
   connect(): void;
@@ -119,6 +126,7 @@ function eventWithNameAndValue(name: string, value: number | string): void {
 function makeTenjin(): TenjinSDK {
   if (TenjinModule) {
     const extendedObj = {
+      initialize,
       updatePostbackConversionValue,
       eventWithNameAndValue,
       subscription,

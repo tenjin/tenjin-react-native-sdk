@@ -1,6 +1,6 @@
 {
   "name": "react-native-tenjin",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "description": "Tenjin is a unique growth infrastructure platform that helps you streamline your mobile marketing.",
   "main": "./lib/module/index.js",
   "types": "./lib/typescript/src/index.d.ts",

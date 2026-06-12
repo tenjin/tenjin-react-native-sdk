@@ -16,7 +16,8 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   private var instance: TenjinSDK? = null
 
   @ReactMethod
-  override fun initialize(apiKey: String) {
+  override fun initialize(apiKey: String, pluginVersion: String) {
+    TenjinSDK.setPluginVersion("react-native", pluginVersion)
     instance = TenjinSDK.getInstance(reactContext, apiKey)
   }
 
@@ -113,7 +114,18 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
     androidPurchaseData: String?,
     androidDataSignature: String?
   ) {
-    // iOS only — Android Tenjin SDK does not support subscription tracking yet
+    if (androidPurchaseToken == null || androidPurchaseData == null || androidDataSignature == null) {
+      return
+    }
+    val purchaseDate = try {
+      JSONObject(androidPurchaseData).optLong("purchaseTime", 0L)
+    } catch (e: JSONException) {
+      0L
+    }
+    instance?.subscription(
+      productId, androidPurchaseToken, unitPrice, currencyCode,
+      purchaseDate, androidPurchaseData, androidDataSignature
+    )
   }
 
   @ReactMethod

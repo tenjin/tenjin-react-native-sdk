@@ -12,8 +12,10 @@
 
 RCT_EXPORT_MODULE(Tenjin)
 
-RCT_EXPORT_METHOD(initialize:(NSString * _Nonnull)apiKey)
+RCT_EXPORT_METHOD(initialize:(NSString * _Nonnull)apiKey
+                  pluginVersion:(NSString * _Nonnull)pluginVersion)
 {
+    [TenjinSDK setPluginVersion:@"react-native" version:pluginVersion];
     [TenjinSDK getInstance:apiKey];
 }
 

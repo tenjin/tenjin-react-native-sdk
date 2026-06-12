@@ -6,7 +6,7 @@ type JSONObject = {
 };
 
 export interface Spec extends TurboModule {
-  initialize(apiKey: string): void;
+  initialize(apiKey: string, pluginVersion: string): void;
   connect(): void;
   optIn(): void;
   optOut(): void;
