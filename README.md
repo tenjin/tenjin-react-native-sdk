@@ -251,9 +251,36 @@ Tenjin supports the ability to integrate with the Impression Level Ad Revenue (I
 - TopOn
 - Clever Ads Solutions (CAS)
 - TradPlus
+- CloudX
 
 > [!WARNING]
 > ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.
+
+#### CloudX ILRD Integration
+
+```javascript
+// Send CloudX ad impression
+const cloudXData = {
+  adUnitId: 'ad_unit_id_from_cloudx',
+  networkName: 'CloudX',
+  adFormat: 'banner', // or 'interstitial', 'rewarded', etc.
+  revenue: 0.15,
+  currency: 'USD',
+  placement: 'main_banner',
+  networkPlacement: 'cloudx_placement_id'
+};
+
+Tenjin.eventAdImpressionCloudX(cloudXData);
+```
+
+**Parameters:**
+- `adUnitId`: String - The ad unit ID from CloudX
+- `networkName`: String - Ad network name (CloudX)
+- `adFormat`: String - Ad format (e.g., 'banner', 'interstitial', 'rewarded')
+- `revenue`: Number - Revenue value (can be 0 if not available)
+- `currency`: String - Currency code (default: 'USD')
+- `placement`: String - Optional placement identifier
+- `networkPlacement`: String - Optional network-specific placement identifier
 
 ### Send Google DMA Parameters
 ```javascript
