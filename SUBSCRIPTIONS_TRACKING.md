@@ -2,7 +2,7 @@
 
 Track subscription purchases with Tenjin for server-side verification and attribution.
 
-> **Platform support:** subscription tracking is iOS only.
+> **Platform support:** subscription tracking is available on **iOS** and **Android**. Android tracking requires `react-native-tenjin` 1.4.0+ (bundles Tenjin Android SDK 1.20.0+).
 
 ## Method
 
