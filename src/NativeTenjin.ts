@@ -2,7 +2,7 @@ import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
 type JSONObject = {
-  [key: string]: string | number | boolean | null | JSONObject | JSONObject[];
+  [key: string]: string | number | boolean | null;
 };
 
 export interface Spec extends TurboModule {
