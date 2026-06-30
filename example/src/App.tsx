@@ -193,6 +193,20 @@ export default function App() {
         }
       />
       <Button
+        title="CloudX Impression"
+        onPress={() =>
+          Tenjin.eventAdImpressionCloudX({
+            adUnitId: 'cloudx_ad_unit_123',
+            networkName: 'CloudX',
+            adFormat: 'banner',
+            revenue: 0.25,
+            currency: 'USD',
+            placement: 'main_banner',
+            networkPlacement: 'cloudx_placement_001',
+          })
+        }
+      />
+      <Button
         title="Get User Profile"
         onPress={() =>
           Tenjin.getUserProfileDictionary((profile) => {
