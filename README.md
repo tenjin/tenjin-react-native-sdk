@@ -9,6 +9,52 @@ The Tenjin React Native Plugin allows users to track events and installs in thei
 On iOS:
 For AppTrackingTransparency, be sure to update your project `.plist` file and add `NSUserTrackingUsageDescription` along with the text message you want to display to users. This library is only available in iOS 14.0+. For further information on this, you can check our [iOS documentation](https://github.com/tenjin/tenjin-ios-sdk#-skadnetwork-and-ios-15-advertiser-postbacks)
 
+# Table of contents
+
+- [Integrate with an AI assistant (LLM)](#integrate-with-an-ai-assistant-llm)
+- [Plugin Integration](#plugin-integration)
+  - [Getting started](#getting-started)
+    - [Mostly automatic installation](#mostly-automatic-installation)
+    - [Import](#import)
+  - [Available methods](#available-methods)
+    - [Initialize](#initialize)
+    - [Connect](#connect)
+    - [Set AppStore type (only available for Android)](#set-appstore-type-only-available-for-android)
+    - [OptIn](#optin)
+    - [OptOut](#optout)
+    - [OptIn with parameters](#optin-with-parameters)
+    - [OptOut with parameters](#optout-with-parameters)
+    - [OptIn and OptOut using CMP](#optin-and-optout-using-cmp)
+    - [Opt out of Google DMA parameters](#opt-out-of-google-dma-parameters)
+    - [Opt in of Google DMA parameters](#opt-in-of-google-dma-parameters)
+    - [Register transaction (iOS)](#register-transaction-ios)
+    - [Register transaction (Android)](#register-transaction-android)
+    - [Subscription Tracking](#subscription-tracking)
+    - [Send event with name](#send-event-with-name)
+    - [Send event with name and value](#send-event-with-name-and-value)
+    - [LiveOps Campaigns](#liveops-campaigns)
+    - [Append app subversion](#append-app-subversion)
+    - [Customer User ID](#customer-user-id)
+    - [Get Analytics Installation ID](#get-analytics-installation-id)
+    - [User Profile - LiveOps Metrics](#user-profile---liveops-metrics)
+      - [Automatic Tracking](#automatic-tracking)
+      - [Get User Profile Dictionary](#get-user-profile-dictionary)
+      - [Reset User Profile](#reset-user-profile)
+    - [Impression Level Revenue Data Integration (ILRD)](#impression-level-revenue-data-integration-ilrd)
+    - [Send Google DMA Parameters](#send-google-dma-parameters)
+    - [SKAdNetwork and Conversion value (iOS)](#skadnetwork-and-conversion-value-ios)
+- [Support](#support)
+
+# Integrate with an AI assistant (LLM)
+
+You can integrate the Tenjin React Native SDK with the help of an AI assistant (Claude, Cursor, GitHub Copilot, etc.). Paste the following prompt into your assistant of choice:
+
+```
+Add Tenjin SDK to my project using: https://raw.githubusercontent.com/tenjin/sdk-llm-guides/main/guides/react-native/llm-guide.md
+```
+
+The guide walks the assistant through the complete integration. For more details, see the [Tenjin SDK Guides for LLMs](https://github.com/tenjin/sdk-llm-guides).
+
 # Plugin Integration
 
 ## Getting started
@@ -158,9 +204,6 @@ Parameters:
 ### LiveOps Campaigns
 Tenjin supports retrieving of attributes, which are required for developers to get analytics installation id (previously known as tenjin reference id). This parameter can be used when there is no advertising id.
 
-> [!WARNING]
-> Attribution Info is a paid feature, so please contact your Tenjin account manager if you are interested in.
-
 ### Append app subversion
 ```javascript
 Tenjin.appendAppSubversion(subversion)
@@ -252,6 +295,7 @@ Tenjin supports the ability to integrate with the Impression Level Ad Revenue (I
 - Clever Ads Solutions (CAS)
 - TradPlus
 - CloudX
+
 
 > [!WARNING]
 > ILRD is a paid feature, so please contact your Tenjin account manager to discuss the price at first before sending ILRD events.
