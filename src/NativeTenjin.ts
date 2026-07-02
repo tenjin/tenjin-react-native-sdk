@@ -1,8 +1,9 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
+// Non-recursive by design: RN 0.84+ codegen stack-overflows on a self-referential alias. See PR #60.
 type JSONObject = {
-  [key: string]: string | number | boolean | null | JSONObject | JSONObject[];
+  [key: string]: string | number | boolean | null;
 };
 
 export interface Spec extends TurboModule {
