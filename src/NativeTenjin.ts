@@ -1,9 +1,7 @@
 import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
-// Intentionally non-recursive: RN 0.85+ codegen overflows on a self-referential type
-// alias during `pod install`. Types are erased at runtime, so the native bridge still
-// gets the full nested object. See PR #60.
+// Non-recursive by design: RN 0.84+ codegen stack-overflows on a self-referential alias. See PR #60.
 type JSONObject = {
   [key: string]: string | number | boolean | null;
 };
