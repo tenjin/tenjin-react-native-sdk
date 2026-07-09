@@ -230,6 +230,16 @@ RCT_EXPORT_METHOD(eventAdImpressionTradPlus:(NSDictionary * _Nonnull)json)
     }
 }
 
+RCT_EXPORT_METHOD(eventAdImpressionCloudX:(NSDictionary * _Nonnull)json)
+{
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:json options:0 error:&error];
+    if (jsonData) {
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [TenjinSDK cloudXImpressionFromJSON:jsonString];
+    }
+}
+
 RCT_EXPORT_METHOD(setCustomerUserId:(NSString * _Nonnull)userId)
 {
     [TenjinSDK setCustomerUserId:userId];

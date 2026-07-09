@@ -212,6 +212,15 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   }
 
   @ReactMethod
+  override fun eventAdImpressionCloudX(json: ReadableMap) {
+    try {
+      instance?.eventAdImpressionCloudX(convertMapToJson(json))
+    } catch (e: JSONException) {
+      e.printStackTrace()
+    }
+  }
+
+  @ReactMethod
   override fun setCustomerUserId(userId: String) {
     instance?.setCustomerUserId(userId)
   }

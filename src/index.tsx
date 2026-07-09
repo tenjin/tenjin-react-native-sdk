@@ -80,6 +80,7 @@ export interface TenjinSDK {
   eventAdImpressionIronSource(json: Record<string, any>): void;
   eventAdImpressionTopOn(json: Record<string, any>): void;
   eventAdImpressionTradPlus(json: Record<string, any>): void;
+  eventAdImpressionCloudX(json: Record<string, any>): void;
   setCustomerUserId(userId: string): void;
   getCustomerUserId(callback: (userId: string) => void): void;
   getAnalyticsInstallationId(callback: (id: string) => void): void;
