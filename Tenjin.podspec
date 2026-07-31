@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
     'SWIFT_OBJC_INTEROP_MODE' => 'objcxx',
   }
 
-  s.dependency "TenjinSDK", "1.17.2"
+  s.dependency "TenjinSDK", "1.18.0"
 
  install_modules_dependencies(s)
 end
