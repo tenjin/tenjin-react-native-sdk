@@ -230,6 +230,18 @@ Tenjin.getAnalyticsInstallationId()
 ```
 Returns: callback -> `string`
 
+### Retry/cache events and IAP
+You can enable/disable retrying and caching events and IAP when requests fail or users don't have internet connection. These events will be sent after a new event has been added to the queue and user has recovered connection.
+
+```javascript
+Tenjin.setCacheEventSetting(true)
+```
+Parameters:
+- `setting`: boolean
+
+> [!IMPORTANT]
+> This setting is stored on the device and persists across app sessions on both iOS and Android. Once a build has enabled it, removing the `setCacheEventSetting` call in a later release will **not** disable caching for existing users, because the previously stored value stays in effect. To turn it off, explicitly call `Tenjin.setCacheEventSetting(false)`.
+
 ### User Profile - LiveOps Metrics
 
 The Tenjin SDK automatically tracks user engagement metrics to help you understand player behavior and lifetime value. These metrics are collected automatically and can be accessed programmatically.
