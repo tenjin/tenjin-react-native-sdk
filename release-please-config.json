@@ -6,5 +6,7 @@
       "changelog-path": "CHANGELOG.md",
       "package-name": "react-native-tenjin"
     }
-  }
+  },
+  "include-v-in-tag": false,
+  "tag-format": "${version}"
 }
