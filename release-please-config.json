@@ -8,5 +8,5 @@
     }
   },
   "include-v-in-tag": false,
-  "tag-format": "${version}"
+  "include-component-in-tag": false
 }
