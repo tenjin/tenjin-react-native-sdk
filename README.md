@@ -34,6 +34,7 @@ For AppTrackingTransparency, be sure to update your project `.plist` file and ad
     - [Send event with name and value](#send-event-with-name-and-value)
     - [LiveOps Campaigns](#liveops-campaigns)
     - [Append app subversion](#append-app-subversion)
+    - [Re-engagement Deeplinks](#re-engagement-deeplinks)
     - [Customer User ID](#customer-user-id)
     - [Get Analytics Installation ID](#get-analytics-installation-id)
     - [User Profile - LiveOps Metrics](#user-profile---liveops-metrics)
@@ -210,6 +211,24 @@ Tenjin.appendAppSubversion(subversion)
 ```
 Parameters:
 - `subversion`: Number
+
+### Re-engagement Deeplinks
+Report the deeplink your app was opened with, so re-engagement clicks can be attributed to the ad network.
+
+```javascript
+Tenjin.handleOpenUrl(url)
+```
+Parameters:
+- `url`: string
+
+Forward both the launch link and links received while the app is running:
+
+```javascript
+Linking.getInitialURL().then((url) => url && Tenjin.handleOpenUrl(url));
+Linking.addEventListener('url', ({ url }) => Tenjin.handleOpenUrl(url));
+```
+
+On iOS this is safe to call before `initialize`. On Android, opens that start or recreate your activity are captured automatically, so this is only needed for links delivered to an already-running activity.
 
 ### Customer User ID
 ```javascript

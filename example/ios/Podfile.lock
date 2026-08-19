@@ -1714,7 +1714,7 @@ PODS:
     - PurchasesHybridCommon (= 17.51.1)
     - React-Core
   - SocketRocket (0.7.1)
-  - Tenjin (1.3.2):
+  - Tenjin (1.5.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1737,9 +1737,9 @@ PODS:
     - ReactCodegen
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
-    - TenjinSDK (= 1.16.0)
+    - TenjinSDK (= 1.19.0)
     - Yoga
-  - TenjinSDK (1.16.0)
+  - TenjinSDK (1.19.0)
   - Yoga (0.0.0)
 
 DEPENDENCIES:
@@ -2056,8 +2056,8 @@ SPEC CHECKSUMS:
   RevenueCat: 9a37739bdf42af84dd87e023db340de7e0f9d874
   RNPurchases: f0abaaee45a4ec59c7ff62dcebba8b2a3e384886
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
-  Tenjin: a1764682de6a72fd572448c974ca492f42c0c143
-  TenjinSDK: d550ccd6f82a0b2e27a93541c891f74f6c3e1b39
+  Tenjin: b6112b4c1511e1982028725d072600e8d6793783
+  TenjinSDK: 0385f1abc35ece1df179bfde036fcf9260b49839
   Yoga: c758bfb934100bb4bf9cbaccb52557cee35e8bdf
 
 PODFILE CHECKSUM: 7c670c43342680449d8bab7ffa5ff0c70ede6a65

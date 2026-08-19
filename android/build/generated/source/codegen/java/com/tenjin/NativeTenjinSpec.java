@@ -21,6 +21,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.turbomodule.core.interfaces.TurboModule;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implements TurboModule {
   public static final String NAME = "Tenjin";
@@ -36,7 +37,7 @@ public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implem
 
   @ReactMethod
   @DoNotStrip
-  public abstract void initialize(String apiKey);
+  public abstract void initialize(String apiKey, String pluginVersion);
 
   @ReactMethod
   @DoNotStrip
@@ -85,6 +86,10 @@ public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implem
   @ReactMethod
   @DoNotStrip
   public abstract void transactionWithDataSignature(String productName, String currencyCode, double quantity, double unitPrice, String purchaseData, String dataSignature);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void subscription(String productId, String currencyCode, double unitPrice, @Nullable String iosTransactionId, @Nullable String iosOriginalTransactionId, @Nullable String iosReceipt, @Nullable String iosSKTransaction, @Nullable String androidPurchaseToken, @Nullable String androidPurchaseData, @Nullable String androidDataSignature);
 
   @ReactMethod
   @DoNotStrip
@@ -140,6 +145,14 @@ public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implem
 
   @ReactMethod
   @DoNotStrip
+  public abstract void eventAdImpressionCloudX(ReadableMap json);
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void handleOpenUrl(String url);
+
+  @ReactMethod
+  @DoNotStrip
   public abstract void setCustomerUserId(String userId);
 
   @ReactMethod
@@ -169,4 +182,8 @@ public abstract class NativeTenjinSpec extends ReactContextBaseJavaModule implem
   @ReactMethod
   @DoNotStrip
   public abstract void resetUserProfile();
+
+  @ReactMethod
+  @DoNotStrip
+  public abstract void subscriptionWithStoreKit(String productId, String currencyCode, double unitPrice, Callback successCallback, Callback errorCallback);
 }

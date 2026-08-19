@@ -75,6 +75,7 @@ export interface Spec extends TurboModule {
   eventAdImpressionTopOn(json: JSONObject): void;
   eventAdImpressionTradPlus(json: JSONObject): void;
   eventAdImpressionCloudX(json: JSONObject): void;
+  handleOpenUrl(url: string): void;
   setCustomerUserId(userId: string): void;
   getCustomerUserId(callback: (userId: string) => void): void;
   getAnalyticsInstallationId(callback: (id: string) => void): void;
