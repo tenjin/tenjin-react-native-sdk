@@ -154,7 +154,7 @@ Parameters:
 - `dataSignature`: String
 
 ### Subscription Tracking
-Track subscription purchases for server-side verification and attribution. See [SUBSCRIPTIONS_TRACKING.md](SUBSCRIPTIONS_TRACKING.md) for the full guide, including integration examples with `react-native-iap` and RevenueCat.
+Track subscription purchases for server-side verification and attribution. See [SUBSCRIPTIONS_TRACKING.md](SUBSCRIPTIONS_TRACKING.md) for the full guide, including integration examples with `react-native-iap`.
 
 ```javascript
 // Option 1: Pass all parameters manually (e.g., from react-native-iap)
