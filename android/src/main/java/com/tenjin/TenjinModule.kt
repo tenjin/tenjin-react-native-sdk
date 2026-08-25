@@ -221,6 +221,11 @@ class TenjinModule internal constructor(private val reactContext: ReactApplicati
   }
 
   @ReactMethod
+  override fun handleOpenUrl(url: String) {
+    instance?.handleOpenUrl(url)
+  }
+
+  @ReactMethod
   override fun setCustomerUserId(userId: String) {
     instance?.setCustomerUserId(userId)
   }

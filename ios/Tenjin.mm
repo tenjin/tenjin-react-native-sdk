@@ -240,6 +240,11 @@ RCT_EXPORT_METHOD(eventAdImpressionCloudX:(NSDictionary * _Nonnull)json)
     }
 }
 
+RCT_EXPORT_METHOD(handleOpenUrl:(NSString * _Nonnull)url)
+{
+    [TenjinSDK handleOpenURLString:url];
+}
+
 RCT_EXPORT_METHOD(setCustomerUserId:(NSString * _Nonnull)userId)
 {
     [TenjinSDK setCustomerUserId:userId];
