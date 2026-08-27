@@ -22,7 +22,7 @@ const TenjinModule = isTurboModuleEnabled
   : NativeModules.Tenjin;
 
 // Keep in sync with the "version" field in package.json. Reported to Tenjin as plugin_version.
-const PLUGIN_VERSION = '1.4.0';
+const PLUGIN_VERSION = '1.6.0';
 
 function initialize(apiKey: string): void {
   TenjinModule.initialize(apiKey, PLUGIN_VERSION);
