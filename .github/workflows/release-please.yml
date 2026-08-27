@@ -39,7 +39,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # npm@latest (needed for trusted publishing) requires Node >=22.22;
+          # keep this in step with npm's engine range or publishing fails with EBADENGINE
+          node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
       - name: Enable Corepack
