@@ -4,9 +4,13 @@
   "packages": {
     ".": {
       "changelog-path": "CHANGELOG.md",
-      "package-name": "react-native-tenjin"
+      "package-name": "react-native-tenjin",
+      "extra-files": [
+        "src/index.tsx"
+      ]
     }
   },
   "include-v-in-tag": false,
-  "include-component-in-tag": false
+  "include-component-in-tag": false,
+  "tag-format": "${version}"
 }
