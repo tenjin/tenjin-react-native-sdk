@@ -39,8 +39,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          # npm@latest (needed for trusted publishing) requires Node >=22.22;
-          # keep this in step with npm's engine range or publishing fails with EBADENGINE
+          # npm@latest (needed for trusted publishing) declares
+          # engines.node ^22.22.2 || ^24.15.0 || >=26.0.0 — keep this in step with
+          # that range or publishing fails with EBADENGINE
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
