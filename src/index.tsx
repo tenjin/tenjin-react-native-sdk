@@ -24,7 +24,7 @@ const TenjinModule = isTurboModuleEnabled
 // Reported to Tenjin as plugin_version. Kept in sync with package.json by
 // release-please; do not edit by hand.
 // x-release-please-start-version
-const PLUGIN_VERSION = '1.6.0';
+const PLUGIN_VERSION = '1.7.0';
 // x-release-please-end
 
 function initialize(apiKey: string): void {

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/tenjin/tenjin-react-native-sdk/compare/1.6.0...1.7.0) (2026-09-22)
+
+
+### Features
+
+* update Android SDK to 1.24.0 and iOS SDK to 1.19.1 ([#95](https://github.com/tenjin/tenjin-react-native-sdk/issues/95)) ([14e7374](https://github.com/tenjin/tenjin-react-native-sdk/commit/14e7374bf87d1dff72c39fa2887d5e619e8cc1aa))
+
 ## [1.6.0](https://github.com/tenjin/tenjin-react-native-sdk/compare/1.5.1...1.6.0) (2026-08-25)
 
 
