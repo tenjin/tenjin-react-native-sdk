@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/tenjin/tenjin-react-native-sdk/compare/1.7.0...1.8.0) (2026-10-07)
+
+
+### Features
+
+* update Android SDK to 2.0.0 and iOS SDK to 1.20.0 ([#99](https://github.com/tenjin/tenjin-react-native-sdk/issues/99)) ([d35ed76](https://github.com/tenjin/tenjin-react-native-sdk/commit/d35ed76ced7bfdf6320159f937d11660ca7b9b6b))
+
 ## [1.7.0](https://github.com/tenjin/tenjin-react-native-sdk/compare/1.6.0...1.7.0) (2026-09-22)
 
 
