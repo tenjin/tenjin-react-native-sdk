@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/tenjin/tenjin-react-native-sdk/compare/1.8.0...1.8.1) (2026-10-27)
+
+
+### Bug Fixes
+
+* update Android SDK to 2.0.2 ([#105](https://github.com/tenjin/tenjin-react-native-sdk/issues/105)) ([b323da6](https://github.com/tenjin/tenjin-react-native-sdk/commit/b323da60c9bd7ba07593ca50d6c541781b47d547))
+
 ## [1.8.0](https://github.com/tenjin/tenjin-react-native-sdk/compare/1.7.0...1.8.0) (2026-10-07)
 
 
