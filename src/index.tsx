@@ -24,8 +24,15 @@ const TenjinModule = isTurboModuleEnabled
 // Keep in sync with the "version" field in package.json. Reported to Tenjin as plugin_version.
 const PLUGIN_VERSION = '1.4.0';
 
+// Tenjin methods are no-ops until initialize() has created the native instance.
+// Track that here so a developer who calls the SDK too early gets a warning
+// instead of silence (TENJIN-30667).
+let isInitialized = false;
+let warnedBeforeInit = false;
+
 function initialize(apiKey: string): void {
   TenjinModule.initialize(apiKey, PLUGIN_VERSION);
+  isInitialized = true;
 }
 
 export interface TenjinSDK {
@@ -133,7 +140,28 @@ function makeTenjin(): TenjinSDK {
       subscription,
     };
     Object.setPrototypeOf(extendedObj, TenjinModule);
-    return extendedObj as TenjinSDK;
+    // Wrap every method so a call made before initialize() logs a one-time
+    // warning. The call is still forwarded, so behaviour is unchanged for
+    // correctly-ordered usage (TENJIN-30667).
+    return new Proxy(extendedObj as TenjinSDK, {
+      get(target, prop, receiver) {
+        const value = Reflect.get(target, prop, receiver);
+        if (typeof value !== 'function' || prop === 'initialize') {
+          return value;
+        }
+        return (...args: unknown[]) => {
+          if (!isInitialized && !warnedBeforeInit) {
+            warnedBeforeInit = true;
+            console.warn(
+              `Tenjin: '${String(prop)}' was called before initialize(). ` +
+                'Tenjin methods are no-ops until you call Tenjin.initialize(apiKey) ' +
+                'and Tenjin.connect() — nothing was sent.'
+            );
+          }
+          return (value as (...a: unknown[]) => unknown).apply(target, args);
+        };
+      },
+    });
   } else {
     return new Proxy(
       {},
