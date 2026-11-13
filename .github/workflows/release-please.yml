@@ -4,6 +4,14 @@ on:
   push:
     branches:
       - master
+  # Publishes an existing release to npm, for when release-please tagged it but
+  # the run failed before publish (e.g. a GitHub API error after the release)
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing release tag to publish to npm (e.g. 1.8.1)'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -11,6 +19,7 @@ permissions:
 
 jobs:
   release-please:
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
@@ -25,7 +34,8 @@ jobs:
 
   publish:
     needs: release-please
-    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    # !cancelled() so a manual run still publishes while release-please is skipped
+    if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || needs.release-please.outputs.release_created == 'true') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -34,7 +44,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.release-please.outputs.tag_name }}
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || needs.release-please.outputs.tag_name }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
