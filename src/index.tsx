@@ -142,24 +142,31 @@ function makeTenjin(): TenjinSDK {
     Object.setPrototypeOf(extendedObj, TenjinModule);
     // Wrap every method so a call made before initialize() logs a one-time
     // warning. The call is still forwarded, so behaviour is unchanged for
-    // correctly-ordered usage (TENJIN-30667).
+    // correctly-ordered usage (TENJIN-30667). Wrappers are cached per property,
+    // so Tenjin.connect === Tenjin.connect.
+    const wrappers = new Map<PropertyKey, (...args: unknown[]) => unknown>();
     return new Proxy(extendedObj as TenjinSDK, {
       get(target, prop, receiver) {
         const value = Reflect.get(target, prop, receiver);
         if (typeof value !== 'function' || prop === 'initialize') {
           return value;
         }
-        return (...args: unknown[]) => {
-          if (!isInitialized && !warnedBeforeInit) {
-            warnedBeforeInit = true;
-            console.warn(
-              `Tenjin: '${String(prop)}' was called before initialize(). ` +
-                'Tenjin methods are no-ops until you call Tenjin.initialize(apiKey) ' +
-                'and Tenjin.connect() — nothing was sent.'
-            );
-          }
-          return (value as (...a: unknown[]) => unknown).apply(target, args);
-        };
+        let wrapper = wrappers.get(prop);
+        if (!wrapper) {
+          wrapper = (...args: unknown[]) => {
+            if (!isInitialized && !warnedBeforeInit) {
+              warnedBeforeInit = true;
+              console.warn(
+                `Tenjin: '${String(prop)}' was called before initialize(), ` +
+                  'so this call may be ignored. Call Tenjin.initialize(apiKey) ' +
+                  'and Tenjin.connect() first.'
+              );
+            }
+            return (value as (...a: unknown[]) => unknown).apply(target, args);
+          };
+          wrappers.set(prop, wrapper);
+        }
+        return wrapper;
       },
     });
   } else {
