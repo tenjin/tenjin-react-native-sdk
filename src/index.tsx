@@ -27,8 +27,15 @@ const TenjinModule = isTurboModuleEnabled
 const PLUGIN_VERSION = '1.8.1';
 // x-release-please-end
 
+// Tenjin methods are no-ops until initialize() has created the native instance.
+// Track that here so a developer who calls the SDK too early gets a warning
+// instead of silence (TENJIN-30667).
+let isInitialized = false;
+let warnedBeforeInit = false;
+
 function initialize(apiKey: string): void {
   TenjinModule.initialize(apiKey, PLUGIN_VERSION);
+  isInitialized = true;
 }
 
 export interface TenjinSDK {
@@ -137,7 +144,35 @@ function makeTenjin(): TenjinSDK {
       subscription,
     };
     Object.setPrototypeOf(extendedObj, TenjinModule);
-    return extendedObj as TenjinSDK;
+    // Wrap every method so a call made before initialize() logs a one-time
+    // warning. The call is still forwarded, so behaviour is unchanged for
+    // correctly-ordered usage (TENJIN-30667). Wrappers are cached per property,
+    // so Tenjin.connect === Tenjin.connect.
+    const wrappers = new Map<PropertyKey, (...args: unknown[]) => unknown>();
+    return new Proxy(extendedObj as TenjinSDK, {
+      get(target, prop, receiver) {
+        const value = Reflect.get(target, prop, receiver);
+        if (typeof value !== 'function' || prop === 'initialize') {
+          return value;
+        }
+        let wrapper = wrappers.get(prop);
+        if (!wrapper) {
+          wrapper = (...args: unknown[]) => {
+            if (!isInitialized && !warnedBeforeInit) {
+              warnedBeforeInit = true;
+              console.warn(
+                `Tenjin: '${String(prop)}' was called before initialize(), ` +
+                  'so this call may be ignored. Call Tenjin.initialize(apiKey) ' +
+                  'and Tenjin.connect() first.'
+              );
+            }
+            return (value as (...a: unknown[]) => unknown).apply(target, args);
+          };
+          wrappers.set(prop, wrapper);
+        }
+        return wrapper;
+      },
+    });
   } else {
     return new Proxy(
       {},
