@@ -107,7 +107,8 @@ class RevenueCatProvider implements SubscriptionProvider {
         product.currencyCode,
         product.price,
         () => {},
-        (error) => console.error('[RevenueCat] subscriptionWithStoreKit failed:', error)
+        (error) =>
+          console.error('[RevenueCat] subscriptionWithStoreKit failed:', error)
       );
       // Return null since Tenjin.subscriptionWithStoreKit handles everything natively
       return null;

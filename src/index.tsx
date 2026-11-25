@@ -3,10 +3,7 @@ import {
   updatePostbackConversionValue,
   type TenjinCoarseConversionValue,
 } from './updatePostbackConversionValue';
-import {
-  subscription,
-  type SubscriptionParams,
-} from './subscription';
+import { subscription, type SubscriptionParams } from './subscription';
 
 const LINKING_ERROR =
   `The package 'react-native-tenjin' doesn't seem to be linked. Make sure: \n\n` +

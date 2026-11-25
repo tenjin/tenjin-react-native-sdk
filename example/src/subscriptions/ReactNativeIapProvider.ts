@@ -23,15 +23,20 @@ import {
 import type { SubscriptionProvider, SubscriptionPurchase } from './types';
 
 // Replace with your actual subscription product IDs
-const SUBSCRIPTION_SKUS = Platform.select({
-  ios: ['com.example.monthly', 'com.example.yearly'],
-  android: ['com.example.monthly', 'com.example.yearly'],
-}) ?? [];
+const SUBSCRIPTION_SKUS =
+  Platform.select({
+    ios: ['com.example.monthly', 'com.example.yearly'],
+    android: ['com.example.monthly', 'com.example.yearly'],
+  }) ?? [];
 
 class ReactNativeIapProvider implements SubscriptionProvider {
   private purchaseListener: EventSubscription | null = null;
   private errorListener: EventSubscription | null = null;
-  private products: Array<{ id: string; currency?: string | null; price?: number | null }> = [];
+  private products: Array<{
+    id: string;
+    currency?: string | null;
+    price?: number | null;
+  }> = [];
 
   async setup(): Promise<void> {
     await initConnection();
@@ -117,9 +122,13 @@ class ReactNativeIapProvider implements SubscriptionProvider {
       if (jsonRepresentation) {
         try {
           const txData = JSON.parse(jsonRepresentation);
-          if (txData.transactionId) transactionId = String(txData.transactionId);
-          if (txData.originalTransactionId) originalTransactionId = String(txData.originalTransactionId);
-        } catch { /* use mapped values */ }
+          if (txData.transactionId)
+            transactionId = String(txData.transactionId);
+          if (txData.originalTransactionId)
+            originalTransactionId = String(txData.originalTransactionId);
+        } catch {
+          /* use mapped values */
+        }
       }
 
       return {
