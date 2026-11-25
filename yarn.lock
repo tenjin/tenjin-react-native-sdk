@@ -4171,11 +4171,11 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^2.0.1":
-  version: 2.0.2
-  resolution: "brace-expansion@npm:2.0.2"
+  version: 2.1.8
+  resolution: "brace-expansion@npm:2.1.8"
   dependencies:
     balanced-match: ^1.0.0
-  checksum: 01dff195e3646bc4b0d27b63d9bab84d2ebc06121ff5013ad6e5356daa5a9d6b60fa26cf73c74797f2dc3fbec112af13578d51f75228c1112b26c790a87b0488
+  checksum: a197cc5ec3fc468e523c2a0710cea6959caa26a2cc9f94b692f7faf057ef1e9d1de58dfb99bff6c6bed18a24493a741f8d5da63210430384a26f0b73daf3c746
   languageName: node
   linkType: hard
 
