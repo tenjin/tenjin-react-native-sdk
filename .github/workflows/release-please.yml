@@ -21,6 +21,12 @@ jobs:
   release-please:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    # Merges that land seconds apart would otherwise race to update the release
+    # PR branch, and the losers fail with "Error updating ref". Queue them instead;
+    # a superseded pending run is fine to drop since the newest one sees every commit
+    concurrency:
+      group: release-please-${{ github.ref }}
+      cancel-in-progress: false
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
