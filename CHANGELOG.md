@@ -10,6 +10,13 @@
 * Fix CVE-2026-118773 and CVE-2026-118764 with scoped glob 14.0.2 resolutions for existing glob 10/13 parents and minimatch 11.0.1 for TypeScript-ESTree's ^9.0.4 range. Builder Bob's CommonJS globSync/cwd/absolute/nodir and cacache's CommonJS glob APIs are retained; TypeScript-ESTree's CommonJS minimatch(path, pattern) call is retained. glob 14 and minimatch 11 support Node 18, 20, and >=22; parent packages retain their higher Node engine requirements.
 * Retain explicit blockers: ActiveSupport CVE-2026-126080/GHSA-8474-xrp6-wh69 requires 8.0.5.2+ while CocoaPods-core requires `< 8`; image-size CVE-2025-71329/GHSA-5p2g-fcmc-qvqq and CVE-2025-71330/GHSA-w3rx-r6r6-pgpr require 2.0.3, but Metro 0.82.5 uses the synchronous callable CommonJS API while v2 exposes named `imageSize`. No Metro 0.82 patch with v2 support or image-size 1.x backport is published. The supplied deepmerge advisory remains unresolved because no patched release is published.
 
+## [1.8.2](https://github.com/tenjin/tenjin-react-native-sdk/compare/1.8.1...1.8.2) (2026-11-25)
+
+
+### Bug Fixes
+
+* warn when SDK methods are called before initialize() [TENJIN-30667] ([#110](https://github.com/tenjin/tenjin-react-native-sdk/issues/110)) ([4afe393](https://github.com/tenjin/tenjin-react-native-sdk/commit/4afe393d6537e0a515160602d6aee2142e00950d))
+
 ## [1.8.1](https://github.com/tenjin/tenjin-react-native-sdk/compare/1.8.0...1.8.1) (2026-10-27)
 
 
