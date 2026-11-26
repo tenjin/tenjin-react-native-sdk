@@ -1,0 +1,85 @@
+name: iOS
+
+# macOS runners cost about 10x Linux ones, so this only runs when something the
+# iOS build depends on changes
+on:
+  pull_request:
+    paths:
+      - 'ios/**'
+      - 'src/**'
+      - 'Tenjin.podspec'
+      - 'package.json'
+      - 'yarn.lock'
+      - 'example/ios/**'
+      - 'example/package.json'
+      - 'example/Gemfile*'
+      - '.github/workflows/ios.yml'
+  push:
+    branches:
+      - master
+    paths:
+      - 'ios/**'
+      - 'src/**'
+      - 'Tenjin.podspec'
+      - 'package.json'
+      - 'yarn.lock'
+      - 'example/ios/**'
+      - 'example/package.json'
+      - 'example/Gemfile*'
+      - '.github/workflows/ios.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ios:
+    name: Build example app (iOS)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+          working-directory: example
+
+      # `pod update TenjinSDK` instead of `pod install`: a native SDK bump changes the
+      # TenjinSDK pin in Tenjin.podspec, which `pod install` refuses against the
+      # committed Podfile.lock. Every other pod still comes from the lock.
+      - name: Install pods
+        working-directory: example/ios
+        env:
+          RCT_NEW_ARCH_ENABLED: '1'
+        run: bundle exec pod update TenjinSDK
+
+      - name: Build
+        working-directory: example/ios
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace TenjinExample.xcworkspace \
+            -scheme TenjinExample \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build | tail -50

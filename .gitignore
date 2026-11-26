@@ -85,3 +85,6 @@ android/generated
 
 # React Native Nitro Modules
 nitrogen/
+
+# Kotlin 2.x build cache
+.kotlin/

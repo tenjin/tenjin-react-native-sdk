@@ -93,7 +93,8 @@ export default function App() {
             'USD',
             9.99,
             () => console.log('[App] subscriptionWithStoreKit succeeded'),
-            (error) => console.error('[App] subscriptionWithStoreKit failed:', error)
+            (error) =>
+              console.error('[App] subscriptionWithStoreKit failed:', error)
           )
         }
       />

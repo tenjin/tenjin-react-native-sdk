@@ -5,7 +5,8 @@ buildscript {
         compileSdkVersion = 35
         targetSdkVersion = 35
         ndkVersion = "27.1.12297006"
-        kotlinVersion = "2.0.21"
+        // react-native-iap 14.x pulls Play Billing and openiap libraries built with Kotlin 2.2
+        kotlinVersion = "2.2.10"
     }
     repositories {
         google()
@@ -14,7 +15,7 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
